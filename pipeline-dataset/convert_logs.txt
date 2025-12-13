@@ -1,0 +1,37 @@
+2025-11-02 14:12:01,333 - INFO - ================================================================================
+2025-11-02 14:12:01,333 - INFO - Convert CoNLL 2002 JSONL to TSV for K-BERT NER
+2025-11-02 14:12:01,333 - INFO - ================================================================================
+2025-11-02 14:12:01,334 - INFO - 
+[Processing train]
+2025-11-02 14:12:01,334 - INFO - Converting outputs/conll2002_spanish/train/train.jsonl to outputs/conll2002_tsv/train.tsv
+2025-11-02 14:12:01,544 - INFO -   ✓ Converted 8323 samples
+2025-11-02 14:12:01,544 - INFO -   ✓ Output: outputs/conll2002_tsv/train.tsv
+2025-11-02 14:12:01,544 - INFO - 
+[Processing validation]
+2025-11-02 14:12:01,545 - INFO - Converting outputs/conll2002_spanish/validation/validation.jsonl to outputs/conll2002_tsv/validation.tsv
+2025-11-02 14:12:01,589 - INFO -   ✓ Converted 1915 samples
+2025-11-02 14:12:01,589 - INFO -   ✓ Output: outputs/conll2002_tsv/validation.tsv
+2025-11-02 14:12:01,589 - INFO - 
+[Processing test]
+2025-11-02 14:12:01,589 - INFO - Converting outputs/conll2002_spanish/test/test.jsonl to outputs/conll2002_tsv/test.tsv
+2025-11-02 14:12:01,629 - INFO -   ✓ Converted 1517 samples
+2025-11-02 14:12:01,629 - INFO -   ✓ Output: outputs/conll2002_tsv/test.tsv
+2025-11-02 14:12:01,629 - INFO - 
+================================================================================
+2025-11-02 14:12:01,630 - INFO - CONVERSION COMPLETE
+2025-11-02 14:12:01,630 - INFO - ================================================================================
+2025-11-02 14:12:01,630 - INFO - 
+Statistics:
+2025-11-02 14:12:01,630 - INFO -   train: 8323 samples
+2025-11-02 14:12:01,630 - INFO -   validation: 1915 samples
+2025-11-02 14:12:01,630 - INFO -   test: 1517 samples
+2025-11-02 14:12:01,630 - INFO - 
+Output directory: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv
+2025-11-02 14:12:01,630 - INFO - 
+Files ready for K-BERT NER training:
+2025-11-02 14:12:01,630 - INFO -   - outputs/conll2002_tsv/train.tsv
+2025-11-02 14:12:01,631 - INFO -   - outputs/conll2002_tsv/validation.tsv
+2025-11-02 14:12:01,631 - INFO -   - outputs/conll2002_tsv/test.tsv
+2025-11-02 14:12:01,631 - INFO - 
+================================================================================
+

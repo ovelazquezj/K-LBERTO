@@ -1,0 +1,63 @@
+2025-11-02 13:51:25,743 - INFO - ================================================================================
+2025-11-02 13:51:25,743 - INFO - PHASE 1: Download CoNLL 2002 Spanish Dataset
+2025-11-02 13:51:25,743 - INFO - ================================================================================
+2025-11-02 13:51:25,743 - INFO - Output: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_spanish
+2025-11-02 13:51:25,744 - INFO - 
+[STEP 1] Downloading dataset...
+2025-11-02 13:51:25,744 - INFO -   Downloading from https://github.com/teropa/nlp/raw/master/resources/corpora/conll2002/conll2002.zip
+2025-11-02 13:51:26,203 - ERROR -   ✗ Download failed: HTTP Error 404: Not Found
+2025-11-02 13:54:36,678 - INFO - ================================================================================
+2025-11-02 13:54:36,678 - INFO - PHASE 1: Download CoNLL 2002 Spanish Dataset
+2025-11-02 13:54:36,678 - INFO - ================================================================================
+2025-11-02 13:54:36,678 - INFO - Output: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_spanish
+2025-11-02 13:54:36,679 - INFO - 
+[STEP 1] Downloading dataset files...
+2025-11-02 13:54:36,679 - INFO - 
+  Downloading train...
+2025-11-02 13:54:36,679 - INFO -     URL: https://www.clips.uantwerpen.be/conll2002/ner/esp.train
+2025-11-02 13:54:37,660 - ERROR -     ✗ Download failed: HTTP Error 404: Not Found
+2025-11-02 13:54:37,660 - ERROR -     Try downloading manually from: https://www.clips.uantwerpen.be/conll2002/ner/
+2025-11-02 13:59:48,106 - INFO - ================================================================================
+2025-11-02 13:59:48,106 - INFO - PHASE 1: Download CoNLL 2002 Spanish Dataset
+2025-11-02 13:59:48,106 - INFO - ================================================================================
+2025-11-02 13:59:48,106 - INFO - Output: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_spanish
+2025-11-02 13:59:48,107 - INFO - 
+[STEP 1] Downloading dataset files...
+2025-11-02 13:59:48,107 - INFO - 
+  Downloading train...
+2025-11-02 13:59:48,107 - INFO -     URL: https://raw.githubusercontent.com/teropa/nlp/master/resources/corpora/conll2002/esp.train
+2025-11-02 13:59:50,415 - INFO -     ✓ Downloaded 2943263 bytes
+2025-11-02 13:59:50,416 - INFO -     Parsing train...
+2025-11-02 13:59:50,922 - INFO -     ✓ Parsed 8323 sentences
+2025-11-02 13:59:50,923 - INFO - 
+  Downloading validation...
+2025-11-02 13:59:50,923 - INFO -     URL: https://raw.githubusercontent.com/teropa/nlp/master/resources/corpora/conll2002/esp.testa
+2025-11-02 13:59:51,658 - INFO -     ✓ Downloaded 588809 bytes
+2025-11-02 13:59:51,659 - INFO -     Parsing validation...
+2025-11-02 13:59:51,768 - INFO -     ✓ Parsed 1915 sentences
+2025-11-02 13:59:51,768 - INFO - 
+  Downloading test...
+2025-11-02 13:59:51,768 - INFO -     URL: https://raw.githubusercontent.com/teropa/nlp/master/resources/corpora/conll2002/esp.testb
+2025-11-02 13:59:52,667 - INFO -     ✓ Downloaded 570469 bytes
+2025-11-02 13:59:52,668 - INFO -     Parsing test...
+2025-11-02 13:59:52,778 - INFO -     ✓ Parsed 1517 sentences
+2025-11-02 13:59:52,778 - INFO - 
+[STEP 4] Validating...
+2025-11-02 13:59:52,925 - INFO -   train: 8323/8323 valid
+2025-11-02 13:59:52,955 - INFO -   validation: 1915/1915 valid
+2025-11-02 13:59:52,983 - INFO -   test: 1517/1517 valid
+2025-11-02 13:59:52,983 - INFO - 
+[STEP 5] Computing statistics...
+2025-11-02 13:59:53,309 - INFO -   train: 8323 samples
+2025-11-02 13:59:53,309 - INFO -   validation: 1915 samples
+2025-11-02 13:59:53,309 - INFO -   test: 1517 samples
+2025-11-02 13:59:53,310 - INFO - 
+[STEP 6] Saving...
+2025-11-02 13:59:53,573 - INFO -   ✓ train
+2025-11-02 13:59:53,629 - INFO -   ✓ validation
+2025-11-02 13:59:53,680 - INFO -   ✓ test
+2025-11-02 13:59:53,681 - INFO - 
+================================================================================
+2025-11-02 13:59:53,681 - INFO - ✓ STEP 1 COMPLETE
+2025-11-02 13:59:53,681 - INFO - ================================================================================
+

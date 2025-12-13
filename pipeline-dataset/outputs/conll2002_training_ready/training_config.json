@@ -1,0 +1,59 @@
+{
+  "experiment": {
+    "name": "K-BERT-BETO-CoNLL2002-Spanish-Phase1",
+    "description": "Baseline K-BERT with BETO model on CoNLL 2002 Spanish NER"
+  },
+  "model": {
+    "model_name": "BETO",
+    "model_path": "/path/to/beto_converted_to_uer",
+    "model_type": "bert",
+    "use_knowledge_graph": false
+  },
+  "dataset": {
+    "dataset_name": "CoNLL 2002 Spanish",
+    "task": "ner",
+    "num_labels": 9,
+    "total_samples": 11755,
+    "splits": {
+      "train": {
+        "num_samples": 8323,
+        "num_unique_tokens": 26099,
+        "vocabulary_coverage": {
+          "total_tokens": 26099,
+          "unique_tokens": 26099,
+          "estimated_coverage_pct": 90.24483696693359
+        }
+      },
+      "validation": {
+        "num_samples": 1915,
+        "num_unique_tokens": 9646,
+        "vocabulary_coverage": {
+          "total_tokens": 9646,
+          "unique_tokens": 9646,
+          "estimated_coverage_pct": 92.40099523118391
+        }
+      },
+      "test": {
+        "num_samples": 1517,
+        "num_unique_tokens": 9086,
+        "vocabulary_coverage": {
+          "total_tokens": 9086,
+          "unique_tokens": 9086,
+          "estimated_coverage_pct": 93.8036539731455
+        }
+      }
+    }
+  },
+  "training_hyperparameters": {
+    "num_epochs": 3,
+    "batch_size": 16,
+    "learning_rate": 2e-05,
+    "max_seq_length": 512,
+    "warmup_steps": 220,
+    "weight_decay": 0.01
+  },
+  "hardware": {
+    "device": "cuda",
+    "device_name": "NVIDIA Jetson Orin NX"
+  }
+}

@@ -1,6 +1,8 @@
 # -*- encoding:utf-8 -*-
 """
-  This script provides an k-BERT exmaple for classification.
+K-BERT Classification Training for Spanish (PAWS-X Paraphrase Detection)
+Compatible with BETO model and WikidataES knowledge graph
+Supports visible matrix for knowledge graph injection
 """
 import sys
 import torch
@@ -11,7 +13,7 @@ import collections
 import torch.nn as nn
 from uer.utils.vocab import Vocab
 from uer.utils.constants import *
-from uer.utils.tokenizer import * 
+from uer.utils.tokenizer import *
 from uer.model_builder import build_model
 from uer.utils.optimizers import  BertAdam
 from uer.utils.config import load_hyperparam
@@ -79,7 +81,7 @@ def add_knowledge_worker(params):
             if len(line) == 2:
                 label = int(line[columns["label"]])
                 text = CLS_TOKEN + line[columns["text_a"]]
-   
+
                 tokens, pos, vm, _ = kg.add_knowledge_with_vm([text], add_pad=True, max_length=args.seq_length)
                 tokens = tokens[0]
                 pos = pos[0]
@@ -89,7 +91,7 @@ def add_knowledge_worker(params):
                 mask = [1 if t != PAD_TOKEN else 0 for t in tokens]
 
                 dataset.append((token_ids, label, mask, pos, vm))
-            
+
             elif len(line) == 3:
                 label = int(line[columns["label"]])
                 text = CLS_TOKEN + line[columns["text_a"]] + SEP_TOKEN + line[columns["text_b"]] + SEP_TOKEN
@@ -111,7 +113,7 @@ def add_knowledge_worker(params):
                         seg_tag += 1
 
                 dataset.append((token_ids, label, mask, pos, vm))
-            
+
             elif len(line) == 4:  # for dbqa
                 qid=int(line[columns["qid"]])
                 label = int(line[columns["label"]])
@@ -133,11 +135,11 @@ def add_knowledge_worker(params):
                         mask.append(seg_tag)
                     if t == SEP_TOKEN:
                         seg_tag += 1
-                
+
                 dataset.append((token_ids, label, mask, pos, vm, qid))
             else:
                 pass
-            
+
         except:
             print("Error line: ", line)
     return dataset
@@ -156,7 +158,7 @@ def main():
     parser.add_argument("--train_path", type=str, required=True,
                         help="Path of the trainset.")
     parser.add_argument("--dev_path", type=str, required=True,
-                        help="Path of the devset.") 
+                        help="Path of the devset.")
     parser.add_argument("--test_path", type=str, required=True,
                         help="Path of the testset.")
     parser.add_argument("--config_path", default="./models/google_config.json", type=str,
@@ -186,10 +188,10 @@ def main():
 
     # Tokenizer options.
     parser.add_argument("--tokenizer", choices=["bert", "char", "word", "space"], default="bert",
-                        help="Specify the tokenizer." 
-                             "Original Google BERT uses bert tokenizer on Chinese corpus."
-                             "Char tokenizer segments sentences into characters."
-                             "Word tokenizer supports online word segmentation based on jieba segmentor."
+                        help="Specify the tokenizer. "
+                             "BETO uses bert tokenizer for Spanish text. "
+                             "Char tokenizer segments sentences into characters. "
+                             "Word tokenizer supports online word segmentation based on jieba segmentor. "
                              "Space tokenizer segments sentences into words according to space."
                              )
 
@@ -239,7 +241,7 @@ def main():
                 labels_set.add(label)
             except:
                 pass
-    args.labels_num = len(labels_set) 
+    args.labels_num = len(labels_set)
 
     # Load vocabulary.
     vocab = Vocab()
@@ -254,13 +256,13 @@ def main():
     # Load or initialize parameters.
     if args.pretrained_model_path is not None:
         # Initialize with pretrained model.
-        model.load_state_dict(torch.load(args.pretrained_model_path), strict=False)  
+        model.load_state_dict(torch.load(args.pretrained_model_path), strict=False)
     else:
         # Initialize with normal distribution.
         for n, p in list(model.named_parameters()):
             if 'gamma' not in n and 'beta' not in n:
                 p.data.normal_(0, 0.02)
-    
+
     # Build classification model.
     model = BertClassifier(args, model)
 
@@ -271,7 +273,7 @@ def main():
         model = nn.DataParallel(model)
 
     model = model.to(device)
-    
+
     # Datset loader.
     def batch_loader(batch_size, input_ids, label_ids, mask_ids, pos_ids, vms):
         instances_num = input_ids.size()[0]
@@ -349,7 +351,7 @@ def main():
         confusion = torch.zeros(args.labels_num, args.labels_num, dtype=torch.long)
 
         model.eval()
-        
+
         if not args.mean_reciprocal_rank:
             for i, (input_ids_batch, label_ids_batch,  mask_ids_batch, pos_ids_batch, vms_batch) in enumerate(batch_loader(batch_size, input_ids, label_ids, mask_ids, pos_ids, vms)):
 
@@ -377,12 +379,12 @@ def main():
                 for j in range(pred.size()[0]):
                     confusion[pred[j], gold[j]] += 1
                 correct += torch.sum(pred == gold).item()
-        
+
             if is_test:
                 print("Confusion matrix:")
                 print(confusion)
                 print("Report precision, recall, and f1:")
-            
+
             for i in range(confusion.size()[0]):
                 p = confusion[i,i].item()/confusion[i,:].sum().item()
                 r = confusion[i,i].item()/confusion[:,i].sum().item()
@@ -415,7 +417,7 @@ def main():
                     logits_all=logits
                 if i >= 1:
                     logits_all=torch.cat((logits_all,logits),0)
-        
+
             order = -1
             gold = []
             for i in range(len(dataset)):
@@ -528,7 +530,7 @@ def main():
     total_loss = 0.
     result = 0.0
     best_result = 0.0
-    
+
     for epoch in range(1, args.epochs_num+1):
         model.train()
         for i, (input_ids_batch, label_ids_batch, mask_ids_batch, pos_ids_batch, vms_batch) in enumerate(batch_loader(batch_size, input_ids, label_ids, mask_ids, pos_ids, vms)):

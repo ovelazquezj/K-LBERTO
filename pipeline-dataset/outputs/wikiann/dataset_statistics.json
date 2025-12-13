@@ -1,0 +1,49 @@
+{
+  "language": "es",
+  "dataset_name": "WikiANN",
+  "source": "https://huggingface.co/datasets/unimelb-nlp/wikiann",
+  "splits": {
+    "train": {
+      "num_sentences": 20000,
+      "num_tokens": 129283,
+      "avg_tokens_per_sentence": 6.46,
+      "tag_distribution": {
+        "O": 54216,
+        "B-LOC": 9144,
+        "I-LOC": 12446,
+        "B-PER": 8295,
+        "I-PER": 14833,
+        "B-ORG": 7311,
+        "I-ORG": 23038
+      }
+    },
+    "validation": {
+      "num_sentences": 10000,
+      "num_tokens": 64329,
+      "avg_tokens_per_sentence": 6.43,
+      "tag_distribution": {
+        "O": 26960,
+        "B-LOC": 4567,
+        "B-ORG": 3737,
+        "I-ORG": 11533,
+        "I-LOC": 6310,
+        "B-PER": 3966,
+        "I-PER": 7256
+      }
+    },
+    "test": {
+      "num_sentences": 10000,
+      "num_tokens": 64727,
+      "avg_tokens_per_sentence": 6.47,
+      "tag_distribution": {
+        "B-PER": 3959,
+        "I-PER": 7004,
+        "O": 27491,
+        "B-LOC": 4725,
+        "B-ORG": 3576,
+        "I-ORG": 11371,
+        "I-LOC": 6601
+      }
+    }
+  }
+}

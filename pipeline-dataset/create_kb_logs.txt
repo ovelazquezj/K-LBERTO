@@ -1,0 +1,90 @@
+2025-11-02 14:22:28,238 - INFO - ================================================================================
+2025-11-02 14:22:28,238 - INFO - Convert Geostatistical Entities to K-BERT Spanish Knowledge Base
+2025-11-02 14:22:28,238 - INFO - ================================================================================
+2025-11-02 14:22:28,239 - INFO - Input CSV: /home/omar/projects/K-BERT/pipeline-dataset/entities_v1.csv
+2025-11-02 14:22:28,239 - INFO - Output KB: /home/omar/projects/K-BERT/pipeline-dataset/brain/kgs/GeoSpanish.spo
+
+2025-11-02 14:22:28,239 - INFO - Reading CSV: entities_v1.csv
+2025-11-02 14:22:28,263 - INFO - 
+Writing SPO file: brain/kgs/GeoSpanish.spo
+2025-11-02 14:22:28,267 - INFO -   ✓ Created 5912 triples from 1000 entities
+2025-11-02 14:22:28,268 - INFO - 
+[STEP 2] Generating statistics...
+2025-11-02 14:22:28,281 - INFO - 
+Knowledge Base Statistics:
+2025-11-02 14:22:28,282 - INFO -   Total triples: 5912
+2025-11-02 14:22:28,282 - INFO -   Unique subjects (entities): 779
+2025-11-02 14:22:28,282 - INFO -   Unique predicates (relations): 12
+2025-11-02 14:22:28,282 - INFO -   Unique objects (values): 3138
+2025-11-02 14:22:28,282 - INFO - 
+Most common predicates:
+2025-11-02 14:22:28,282 - INFO -     tipo_entidad: 1000
+2025-11-02 14:22:28,282 - INFO -     ubicacion: 1000
+2025-11-02 14:22:28,282 - INFO -     latitud: 1000
+2025-11-02 14:22:28,283 - INFO -     longitud: 1000
+2025-11-02 14:22:28,283 - INFO -     tipo_via: 1000
+2025-11-02 14:22:28,283 - INFO -     codigo_oficial: 300
+2025-11-02 14:22:28,283 - INFO -     clasificacion_carretera: 300
+2025-11-02 14:22:28,283 - INFO -     numero_carriles: 180
+2025-11-02 14:22:28,283 - INFO -     velocidad_maxima: 102
+2025-11-02 14:22:28,283 - INFO -     estacional: 16
+2025-11-02 14:22:28,283 - INFO - 
+================================================================================
+2025-11-02 14:22:28,283 - INFO - KNOWLEDGE BASE CREATED SUCCESSFULLY
+2025-11-02 14:22:28,283 - INFO - ================================================================================
+2025-11-02 14:22:28,284 - INFO - 
+File location: /home/omar/projects/K-BERT/pipeline-dataset/brain/kgs/GeoSpanish.spo
+2025-11-02 14:22:28,284 - INFO - 
+To use with K-BERT NER training:
+2025-11-02 14:22:28,284 - INFO -   --kg_name ./brain/kgs/GeoSpanish.spo
+2025-11-02 14:22:28,284 - INFO - 
+Or as named KG:
+2025-11-02 14:22:28,284 - INFO -   --kg_name GeoSpanish
+2025-11-02 14:22:28,284 - INFO - 
+================================================================================
+
+2025-11-02 15:45:57,310 - INFO - ================================================================================
+2025-11-02 15:45:57,310 - INFO - Convert Geostatistical Entities to K-BERT Spanish Knowledge Base
+2025-11-02 15:45:57,310 - INFO - ================================================================================
+2025-11-02 15:45:57,311 - INFO - Input CSV: /home/omar/projects/K-BERT/pipeline-dataset/entities_v1.csv
+2025-11-02 15:45:57,311 - INFO - Output KB: /home/omar/projects/K-BERT/pipeline-dataset/brain/kgs/GeoSpanish.spo
+
+2025-11-02 15:45:57,311 - INFO - Reading CSV: entities_v1.csv
+2025-11-02 15:45:57,335 - INFO - 
+Writing SPO file: brain/kgs/GeoSpanish.spo
+2025-11-02 15:45:57,340 - INFO -   ✓ Created 5912 triples from 1000 entities
+2025-11-02 15:45:57,340 - INFO - 
+[STEP 2] Generating statistics...
+2025-11-02 15:45:57,354 - INFO - 
+Knowledge Base Statistics:
+2025-11-02 15:45:57,354 - INFO -   Total triples: 5912
+2025-11-02 15:45:57,354 - INFO -   Unique subjects (entities): 779
+2025-11-02 15:45:57,354 - INFO -   Unique predicates (relations): 12
+2025-11-02 15:45:57,354 - INFO -   Unique objects (values): 3138
+2025-11-02 15:45:57,354 - INFO - 
+Most common predicates:
+2025-11-02 15:45:57,355 - INFO -     tipo_entidad: 1000
+2025-11-02 15:45:57,355 - INFO -     ubicacion: 1000
+2025-11-02 15:45:57,355 - INFO -     latitud: 1000
+2025-11-02 15:45:57,355 - INFO -     longitud: 1000
+2025-11-02 15:45:57,355 - INFO -     tipo_via: 1000
+2025-11-02 15:45:57,355 - INFO -     codigo_oficial: 300
+2025-11-02 15:45:57,355 - INFO -     clasificacion_carretera: 300
+2025-11-02 15:45:57,355 - INFO -     numero_carriles: 180
+2025-11-02 15:45:57,355 - INFO -     velocidad_maxima: 102
+2025-11-02 15:45:57,356 - INFO -     estacional: 16
+2025-11-02 15:45:57,356 - INFO - 
+================================================================================
+2025-11-02 15:45:57,356 - INFO - KNOWLEDGE BASE CREATED SUCCESSFULLY
+2025-11-02 15:45:57,356 - INFO - ================================================================================
+2025-11-02 15:45:57,356 - INFO - 
+File location: /home/omar/projects/K-BERT/pipeline-dataset/brain/kgs/GeoSpanish.spo
+2025-11-02 15:45:57,356 - INFO - 
+To use with K-BERT NER training:
+2025-11-02 15:45:57,356 - INFO -   --kg_name ./brain/kgs/GeoSpanish.spo
+2025-11-02 15:45:57,356 - INFO - 
+Or as named KG:
+2025-11-02 15:45:57,356 - INFO -   --kg_name GeoSpanish
+2025-11-02 15:45:57,357 - INFO - 
+================================================================================
+

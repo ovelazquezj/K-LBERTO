@@ -1,0 +1,43 @@
+2025-11-02 13:59:54,938 - INFO - ================================================================================
+2025-11-02 13:59:54,939 - INFO - PHASE 1: Prepare Splits & BETO Compatibility
+2025-11-02 13:59:54,939 - INFO - ================================================================================
+2025-11-02 13:59:54,939 - INFO - Input: /home/omar/projects/K-BERT/pipeline-dataset/outputs
+2025-11-02 13:59:54,940 - INFO - Output: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_training_ready
+2025-11-02 13:59:54,940 - INFO - 
+[STEP 1] Preparing splits...
+2025-11-02 13:59:54,940 - INFO - 
+  Processing train...
+2025-11-02 13:59:55,615 - INFO -     ✓ 8323 samples
+2025-11-02 13:59:55,615 - INFO -     ✓ 26099 unique tokens
+2025-11-02 13:59:55,615 - INFO -     ✓ BETO coverage: 90.2%
+2025-11-02 13:59:55,616 - INFO - 
+  Processing validation...
+2025-11-02 13:59:55,786 - INFO -     ✓ 1915 samples
+2025-11-02 13:59:55,787 - INFO -     ✓ 9646 unique tokens
+2025-11-02 13:59:55,787 - INFO -     ✓ BETO coverage: 92.4%
+2025-11-02 13:59:55,787 - INFO - 
+  Processing test...
+2025-11-02 13:59:55,934 - INFO -     ✓ 1517 samples
+2025-11-02 13:59:55,934 - INFO -     ✓ 9086 unique tokens
+2025-11-02 13:59:55,934 - INFO -     ✓ BETO coverage: 93.8%
+2025-11-02 13:59:55,996 - INFO - 
+  Global:
+2025-11-02 13:59:55,997 - INFO -     ✓ Total tokens: 31405
+2025-11-02 13:59:55,997 - INFO -     ✓ BETO coverage: 89.5%
+2025-11-02 13:59:56,012 - INFO - 
+[STEP 2] Generating config...
+2025-11-02 13:59:56,013 - INFO -   ✓ Config saved
+2025-11-02 13:59:56,014 - INFO - 
+[STEP 3] Saving metadata...
+2025-11-02 13:59:56,014 - INFO -   ✓ Metadata saved
+2025-11-02 13:59:56,014 - INFO - 
+================================================================================
+2025-11-02 13:59:56,014 - INFO - ✓ STEP 3 COMPLETE
+2025-11-02 13:59:56,014 - INFO - ================================================================================
+2025-11-02 13:59:56,015 - INFO - 
+Total samples: 11755
+2025-11-02 13:59:56,015 - INFO - BETO coverage: 89.5%
+2025-11-02 13:59:56,015 - INFO - ✓ Ready for K-BERT training
+
+2025-11-02 13:59:56,015 - INFO - ================================================================================
+

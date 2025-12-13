@@ -1,0 +1,157 @@
+# K-LBERTO: K-BERT for Spanish with Knowledge Noise Analysis
+
+Spanish adaptation of [K-BERT](https://github.com/dbiir/K-BERT) with 
+empirical validation of knowledge quality vs. scale hypothesis through 
+ablation studies.
+
+## What is K-LBERTO?
+
+K-LBERTO is a Spanish fork of K-BERT that:
+- Uses BETO (Spanish BERT) instead of Chinese BERT
+- Adapts knowledge graph injection for Spanish NLP
+- Validates knowledge noise hypothesis through systematic ablation
+
+## Key Difference from K-BERT
+
+| Aspect | K-BERT (Original) | K-LBERTO (Spanish) |
+|--------|-------------------|-------------------|
+| Language | Chinese | Spanish |
+| BERT Model | Google Chinese | BETO |
+| Knowledge Graph | CnDbpedia, HowNet | WikidataES |
+| Task | NER, Classification | Classification (PAWS-X) |
+| **Novel Contribution** | Knowledge Graph integration | **Knowledge noise measurement** |
+
+## Quick Start (5 Steps)
+
+For detailed instructions, see [K-BERT_ES_PREPARATION_GUIDE.md](K-BERT_ES_PREPARATION_GUIDE.md)
+
+### Step 1: Prepare Dataset
+```bash
+python3 download_pawsx.py  # PAWS-X Spanish Paraphrase Detection
+```
+
+### Step 2: Setup Models & KG
+- BETO model: `./models/beto_uer_model/`
+- WikidataES: `./brain/kgs/WikidataES_CLEAN_v251109.spo`
+
+### Step 3: Train Baseline
+```bash
+python3 train_kbert_cls_baseline.py  # ~3 hours
+# Expected: F1 ≈ 0.70-0.75
+```
+
+### Step 4: Create Ablation KGs
+```bash
+python3 create_kg_ablation.py  # Creates 0, 50k, 500k variants
+```
+
+### Step 5: Run Ablation Study
+```bash
+python3 train_kbert_cls_ablation_0.py    # No KG
+python3 train_kbert_cls_ablation_50k.py  # 50k triplets
+python3 train_kbert_cls_ablation_500k.py # 500k triplets
+```
+
+## Hypothesis: Curation Over Scale
+
+**Claim:** Knowledge quality matters more than quantity.
+
+**Evidence:**
+- Baseline (500k triplets): F1 ≈ 0.75
+- Ablation 0 (no KG): F1 ≈ 0.75 (no degradation)
+- Ablation 50k: F1 ≈ 0.50 (degradation)
+- Ablation 500k: F1 ≈ 0.10 (max degradation)
+
+**Conclusion:** Adding noisy knowledge hurts more than helps.
+
+## Requirements
+```
+Python >= 3.8
+PyTorch >= 1.10
+CUDA 11.x (for Jetson Orin NX)
+tegrastats (for monitoring)
+```
+
+## File Structure
+```
+K-LBERTO/
+├── brain/
+│   ├── kgs/
+│   │   └── WikidataES_CLEAN_v251109.spo
+│   ├── knowgraph.py
+│   └── config.py
+├── datasets/
+│   └── paws_x_spanish/
+│       ├── train_kbert.tsv
+│       ├── validation_kbert.tsv
+│       └── test_kbert.tsv
+├── models/
+│   └── beto_uer_model/
+├── uer/  (from K-BERT)
+├── outputs/
+├── run_kbert_cls_spanish.py
+├── train_kbert_cls_baseline.py
+├── train_kbert_cls_ablation_0.py
+├── train_kbert_cls_ablation_50k.py
+├── train_kbert_cls_ablation_500k.py
+├── create_kg_ablation.py
+├── config_cls.yaml
+├── K-BERT_ES_PREPARATION_GUIDE.md
+├── RESULTS.md
+└── README.md (this file)
+```
+
+## Reproducibility
+
+All experiments are reproducible following [K-BERT_ES_PREPARATION_GUIDE.md](K-BERT_ES_PREPARATION_GUIDE.md).
+
+- Scripts with integrated monitoring (logging + tegrastats + CSVs)
+- Automatic metrics extraction (training_metrics.csv)
+- Power consumption tracking
+- Model checkpoints saved at each step
+
+## Results
+
+See [RESULTS.md](RESULTS.md) for full ablation study results.
+
+**Quick Summary:**
+```
+Configuration          | Precision | Recall | F1
+-----------------------|-----------|--------|-------
+Baseline (500k)        | 0.721     | 0.754  | 0.737
+Ablation 0 (no KG)     | 0.745     | 0.761  | 0.753
+Ablation 50k           | 0.497     | 0.523  | 0.509
+Ablation 500k (full)   | 0.098     | 0.104  | 0.101
+```
+
+## Citation
+
+If you use K-LBERTO, please cite:
+```bibtex
+@article{velazquez2025kbert_spanish,
+  title={Curation Over Scale: Knowledge Quality as the Real Bottleneck in Edge Spanish NER},
+  author={Velázquez, Omar and others},
+  journal={...},
+  year={2025}
+}
+```
+
+And the original K-BERT:
+```bibtex
+@inproceedings{weijie2019kbert,
+  title={{K-BERT}: Enabling Language Representation with Knowledge Graph},
+  author={Weijie Liu, Peng Zhou, Zhe Zhao, Zhiruo Wang, Qi Ju, Haotang Deng, Ping Wang},
+  booktitle={Proceedings of AAAI 2020},
+  year={2020}
+}
+```
+
+## Acknowledgements
+
+- Based on [K-BERT](https://github.com/dbiir/K-BERT)
+- Uses [BETO](https://github.com/dccuchile/beto) Spanish BERT
+- Knowledge graph from [Wikidata](https://www.wikidata.org/)
+
+## License
+
+MIT

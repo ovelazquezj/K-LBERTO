@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "timestamp": "2025-11-02T13:00:36.622938",
+    "python_version": "3.8.20",
+    "platform": "linux"
+  },
+  "pipeline_steps": [
+    {
+      "name": "Download and Validate CoNLL 2002 Spanish Dataset",
+      "success": false,
+      "duration_seconds": 1.174698829650879,
+      "message": "Traceback (most recent call last):\n  File \"01_download_conll2002.py\", line 20, in <module>\n    from datasets import load_dataset\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/datasets/__init__.py\", line 17, in <module>\n    from .arrow_dataset import Dataset\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/datasets/arrow_dataset.py\", line 59, in <module>\n    import pandas as pd\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/__init__.py\", line 48, in <module>\n    from pandas.core.api import (\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/api.py\", line 47, in <module>\n    from pandas.core.groupby import (\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/groupby/__init__.py\", line 1, in <module>\n    from pandas.core.groupby.generic import (\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/groupby/generic.py\", line 77, in <module>\n    from pandas.core.frame import DataFrame\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/frame.py\", line 182, in <module>\n    from pandas.core.generic import NDFrame\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/generic.py\", line 179, in <module>\n    from pandas.core.window import (\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/window/__init__.py\", line 1, in <module>\n    from pandas.core.window.ewm import (\n  File \"/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/core/window/ewm.py\", line 11, in <module>\n    import pandas._libs.window.aggregations as window_aggregations\nImportError: /lib/aarch64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pandas/_libs/window/aggregations.cpython-38-aarch64-linux-gnu.so)\n",
+      "timestamp": "2025-11-02T13:00:37.797758"
+    }
+  ],
+  "data_validation": {},
+  "system_status": {
+    "cpu_percent": 1.0,
+    "memory_percent": 18.0,
+    "disk_percent": 56.0,
+    "python_executable": "/home/omar/miniconda3/envs/geo_kbert_jetson/bin/python",
+    "working_directory": "/home/omar/projects/K-BERT/pipeline-dataset"
+  },
+  "warnings": [],
+  "errors": [
+    "Critical failures: ['datasets_downloaded', 'data_formatted', 'splits_prepared', 'train_split_exists']"
+  ],
+  "readiness": {
+    "datasets_downloaded": false,
+    "data_formatted": false,
+    "splits_prepared": false,
+    "config_generated": false,
+    "train_split_exists": false,
+    "validation_split_exists": false,
+    "test_split_exists": false
+  }
+}

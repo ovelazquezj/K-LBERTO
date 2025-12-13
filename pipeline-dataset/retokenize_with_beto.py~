@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+"""
+Re-tokenize CoNLL 2002 TSV with BETO tokenizer for K-BERT NER
+Aligns labels with BETO tokens to avoid index mismatch errors
+"""
+
+import logging
+from pathlib import Path
+from transformers import AutoTokenizer
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('retokenize_logs.txt'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+class BETORetokenizer:
+    """Re-tokenize with BETO and align labels"""
+    
+    def __init__(self, model_path):
+        logger.info(f"Loading BETO tokenizer from {model_path}")
+        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+        logger.info("✓ Tokenizer loaded")
+    
+    def align_labels_to_tokens(self, original_tokens, original_labels, beto_tokens):
+        """
+        Align original labels to BETO tokens.
+        When BETO splits a token, repeat the label.
+        When BETO merges tokens, use first label.
+        """
+        aligned_labels = []
+        orig_idx = 0
+        
+        for beto_token in beto_tokens:
+            if beto_token in ['[CLS]', '[SEP]', '[PAD]']:
+                aligned_labels.append('[PAD]')
+                continue
+            
+            # Check if this is a continuation token (starts with ##)
+            if beto_token.startswith('##'):
+                # Continuation of previous token - use same label
+                if aligned_labels:
+                    aligned_labels.append(aligned_labels[-1])
+                else:
+                    aligned_labels.append('O')
+            else:
+                # New token
+                if orig_idx < len(original_labels):
+                    aligned_labels.append(original_labels[orig_idx])
+                    orig_idx += 1
+                else:
+                    aligned_labels.append('O')
+        
+        return aligned_labels
+    
+    def retokenize_line(self, tokens_str, labels_str):
+        """Re-tokenize a single line and align labels"""
+        try:
+            original_tokens = tokens_str.split()
+            original_labels = labels_str.split()
+            
+            # Validate
+            if len(original_tokens) != len(original_labels):
+                logger.warning(f"Mismatch: {len(original_tokens)} tokens vs {len(original_labels)} labels")
+                return None, None
+            
+            # Join tokens into text
+            text = ' '.join(original_tokens)
+            
+            # Tokenize with BETO
+            beto_output = self.tokenizer(
+                text,
+                add_special_tokens=True,
+                return_tensors=None,
+                is_split_into_words=False,
+                truncation=False
+            )
+            
+            beto_tokens = self.tokenizer.convert_ids_to_tokens(beto_output['input_ids'])
+            
+            # Align labels
+            aligned_labels = self.align_labels_to_tokens(
+                original_tokens,
+                original_labels,
+                beto_tokens
+            )
+            
+            # Format output
+            new_tokens_str = ' '.join(beto_tokens)
+            new_labels_str = ' '.join(aligned_labels)
+            
+            return new_tokens_str, new_labels_str
+        
+        except Exception as e:
+            logger.error(f"Error processing line: {e}")
+            return None, None
+
+def retokenize_tsv(input_path, output_path, model_path):
+    """Re-tokenize entire TSV file"""
+    
+    logger.info(f"\nInput: {input_path}")
+    logger.info(f"Output: {output_path}")
+    
+    retokenizer = BETORetokenizer(model_path)
+    
+    success_count = 0
+    error_count = 0
+    
+    with open(input_path, 'r', encoding='utf-8') as f_in:
+        with open(output_path, 'w', encoding='utf-8') as f_out:
+            # Write header
+            f_out.write("tokens\tlabels\n")
+            
+            for line_num, line in enumerate(f_in):
+                if line_num == 0:  # Skip header
+                    continue
+                
+                line = line.strip()
+                if not line:
+                    continue
+                
+                # Parse TSV
+                parts = line.split('\t')
+                if len(parts) != 2:
+                    logger.warning(f"Line {line_num}: Invalid format")
+                    error_count += 1
+                    continue
+                
+                tokens_str, labels_str = parts
+                
+                # Re-tokenize
+                new_tokens, new_labels = retokenizer.retokenize_line(tokens_str, labels_str)
+                
+                if new_tokens and new_labels:
+                    f_out.write(f"{new_tokens}\t{new_labels}\n")
+                    success_count += 1
+                    
+                    if (success_count + error_count) % 1000 == 0:
+                        logger.info(f"  Processed: {success_count + error_count} lines")
+                else:
+                    error_count += 1
+    
+    logger.info(f"\n✓ Re-tokenization complete")
+    logger.info(f"  Success: {success_count}")
+    logger.info(f"  Errors: {error_count}")
+    
+    return success_count, error_count
+
+def main():
+    logger.info("=" * 80)
+    logger.info("Re-tokenize CoNLL 2002 with BETO for K-BERT NER")
+    logger.info("=" * 80)
+    
+    model_path = "./models/beto_uer_model"
+    #input_dir = Path('./pipeline-dataset/outputs/conll2002_tsv')
+    #output_dir = Path('./pipeline-dataset/outputs/conll2002_tsv_retokenized')
+    input_dir = Path.home() / 'projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv'
+    output_dir = Path.home() / 'projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv_retokenized'
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Process each split
+    splits = ['train', 'validation', 'test']
+    
+    for split in splits:
+        logger.info(f"\n[{split.upper()}]")
+        
+        input_file = input_dir / f"{split}.tsv"
+        output_file = output_dir / f"{split}.tsv"
+        
+        if not input_file.exists():
+            logger.warning(f"  ⚠ Input file not found: {input_file}")
+            continue
+        
+        success, errors = retokenize_tsv(input_file, output_file, model_path)
+    
+    logger.info("\n" + "=" * 80)
+    logger.info("RE-TOKENIZATION COMPLETE")
+    logger.info("=" * 80)
+    logger.info(f"\nOutput directory: {output_dir.absolute()}")
+    logger.info(f"\nUpdate config.yaml with new paths:")
+    logger.info(f"  train_path: ./pipeline-dataset/outputs/conll2002_tsv_retokenized/train.tsv")
+    logger.info(f"  dev_path: ./pipeline-dataset/outputs/conll2002_tsv_retokenized/validation.tsv")
+    logger.info(f"  test_path: ./pipeline-dataset/outputs/conll2002_tsv_retokenized/test.tsv")
+    logger.info("\n" + "=" * 80 + "\n")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        logger.error(f"Fatal error: {e}", exc_info=True)
+        exit(1)

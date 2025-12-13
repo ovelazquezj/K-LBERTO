@@ -1,0 +1,247 @@
+#!/usr/bin/env python3
+"""
+Download and Validate CoNLL 2002 Spanish Dataset
+CORRECTED: Uses ONLY Python standard library
+- NO datasets (Hugging Face)
+- NO pandas
+- NO numpy
+- Uses: json, urllib, zipfile, pathlib, logging, statistics
+"""
+
+import json
+import logging
+import urllib.request
+import zipfile
+from pathlib import Path
+from datetime import datetime
+from statistics import mean
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('phase1_logs.txt'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+CONLL2002_URL_TRAIN = "https://www.clips.uantwerpen.be/conll2002/ner/esp.train"
+CONLL2002_URL_VAL = "https://www.clips.uantwerpen.be/conll2002/ner/esp.testa"
+CONLL2002_URL_TEST = "https://www.clips.uantwerpen.be/conll2002/ner/esp.testb"
+
+CONFIG = {
+    'dataset_name': 'CoNLL 2002 Spanish',
+    'output_base': './outputs/conll2002_spanish',
+    'cache_dir': './outputs/.cache',
+    'download_urls': {
+        'train': CONLL2002_URL_TRAIN,
+        'validation': CONLL2002_URL_VAL,
+        'test': CONLL2002_URL_TEST,
+    }
+}
+
+def download_file(url, filepath):
+    """Download file from URL"""
+    logger.info(f"  Downloading from {url}")
+    try:
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        urllib.request.urlretrieve(url, filepath)
+        logger.info(f"  ✓ Downloaded to {filepath}")
+        return True
+    except Exception as e:
+        logger.error(f"  ✗ Download failed: {e}")
+        return False
+
+def parse_conll2002_iob2(text):
+    """Parse CoNLL 2002 format (word POS NER)"""
+    sentences = []
+    current_sentence = {'tokens': [], 'ner_tags': []}
+    
+    for line in text.strip().split('\n'):
+        line = line.strip()
+        
+        if not line:
+            if current_sentence['tokens']:
+                sentences.append(current_sentence)
+                current_sentence = {'tokens': [], 'ner_tags': []}
+            continue
+        
+        if line.startswith('-DOCSTART-'):
+            continue
+        
+        parts = line.split()
+        if len(parts) >= 3:
+            token = parts[0]
+            ner_tag = parts[2]
+            current_sentence['tokens'].append(token)
+            current_sentence['ner_tags'].append(ner_tag)
+    
+    if current_sentence['tokens']:
+        sentences.append(current_sentence)
+    
+    return sentences
+
+def convert_ner_tags_to_ids(tag_strings):
+    """Convert tag strings to integer IDs"""
+    tag_to_id = {
+        'O': 0, 'B-PER': 1, 'I-PER': 2,
+        'B-ORG': 3, 'I-ORG': 4,
+        'B-LOC': 5, 'I-LOC': 6,
+        'B-MISC': 7, 'I-MISC': 8,
+    }
+    return [tag_to_id.get(tag, 0) for tag in tag_strings]
+
+def validate_iob2_format(samples):
+    """Validates IOB2 format"""
+    valid_tags = {'O', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC', 'B-MISC', 'I-MISC'}
+    
+    validation_report = {
+        'total_samples': len(samples),
+        'valid_samples': 0,
+        'invalid_samples': 0,
+        'tag_distribution': {}
+    }
+    
+    for idx, sample in enumerate(samples):
+        tokens = sample.get('tokens', [])
+        tags = sample.get('ner_tags', [])
+        
+        if len(tokens) != len(tags):
+            validation_report['invalid_samples'] += 1
+            continue
+        
+        invalid_tags = [tag for tag in tags if tag not in valid_tags]
+        if invalid_tags:
+            validation_report['invalid_samples'] += 1
+            continue
+        
+        validation_report['valid_samples'] += 1
+        
+        for tag in tags:
+            tag_name = tag if tag == 'O' else tag.split('-')[1]
+            validation_report['tag_distribution'][tag_name] = \
+                validation_report['tag_distribution'].get(tag_name, 0) + 1
+    
+    return validation_report
+
+def compute_dataset_statistics(samples_list):
+    """Computes dataset statistics without numpy"""
+    stats = {'dataset_info': {'timestamp': datetime.now().isoformat()}, 'splits': {}}
+    
+    for split_name, samples in samples_list.items():
+        split_stats = {
+            'num_examples': len(samples),
+            'num_tokens_total': 0,
+            'num_entities_total': 0,
+            'avg_tokens_per_sentence': 0,
+            'avg_entities_per_sentence': 0,
+            'entity_distribution': {},
+        }
+        
+        tokens_list = []
+        entities_per_sentence = []
+        
+        for sample in samples:
+            tokens = sample.get('tokens', [])
+            tags = sample.get('ner_tags', [])
+            
+            split_stats['num_tokens_total'] += len(tokens)
+            tokens_list.append(len(tokens))
+            
+            entity_count = sum(1 for tag in tags if tag != 'O')
+            entities_per_sentence.append(entity_count)
+            split_stats['num_entities_total'] += entity_count
+            
+            for tag in tags:
+                if tag != 'O':
+                    entity_type = tag.split('-')[1]
+                    split_stats['entity_distribution'][entity_type] = \
+                        split_stats['entity_distribution'].get(entity_type, 0) + 1
+        
+        split_stats['avg_tokens_per_sentence'] = mean(tokens_list) if tokens_list else 0
+        split_stats['avg_entities_per_sentence'] = mean(entities_per_sentence) if entities_per_sentence else 0
+        split_stats['validation'] = validate_iob2_format(samples)
+        stats['splits'][split_name] = split_stats
+    
+    return stats
+
+def main():
+    logger.info("=" * 80)
+    logger.info("PHASE 1: Download CoNLL 2002 Spanish Dataset")
+    logger.info("=" * 80)
+    
+    output_dir = Path(CONFIG['output_base'])
+    output_dir.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Output: {output_dir.absolute()}")
+    
+    logger.info("\n[STEP 1] Downloading dataset files...")
+    
+    dataset_dict = {}
+    
+    # Download individual files
+    for split_name, url in CONFIG['download_urls'].items():
+        logger.info(f"\n  Downloading {split_name}...")
+        logger.info(f"    URL: {url}")
+        
+        try:
+            # Read from URL directly
+            response = urllib.request.urlopen(url)
+            content = response.read().decode('utf-8')
+            logger.info(f"    ✓ Downloaded {len(content)} bytes")
+        except Exception as e:
+            logger.error(f"    ✗ Download failed: {e}")
+            logger.error(f"    Try downloading manually from: https://www.clips.uantwerpen.be/conll2002/ner/")
+            return False
+        
+        # Parse content
+        logger.info(f"    Parsing {split_name}...")
+        sentences = parse_conll2002_iob2(content)
+        
+        for idx, sentence in enumerate(sentences):
+            sentence['id'] = f"es_{split_name}_{idx}"
+            sentence['ner_tags_ids'] = convert_ner_tags_to_ids(sentence['ner_tags'])
+        
+        dataset_dict[split_name] = sentences
+        logger.info(f"    ✓ Parsed {len(sentences)} sentences")
+    
+    if not dataset_dict:
+        logger.error("No data downloaded")
+        return False
+    
+    logger.info("\n[STEP 4] Validating...")
+    for split_name, samples in dataset_dict.items():
+        validation = validate_iob2_format(samples)
+        logger.info(f"  {split_name}: {validation['valid_samples']}/{validation['total_samples']} valid")
+    
+    logger.info("\n[STEP 5] Computing statistics...")
+    stats = compute_dataset_statistics(dataset_dict)
+    for split_name, split_stats in stats['splits'].items():
+        logger.info(f"  {split_name}: {split_stats['num_examples']} samples")
+    
+    logger.info("\n[STEP 6] Saving...")
+    for split_name, samples in dataset_dict.items():
+        split_dir = output_dir / split_name
+        split_dir.mkdir(exist_ok=True)
+        jsonl_path = split_dir / f"{split_name}.jsonl"
+        with open(jsonl_path, 'w', encoding='utf-8') as f:
+            for sample in samples:
+                f.write(json.dumps(sample, ensure_ascii=False) + '\n')
+        logger.info(f"  ✓ {split_name}")
+    
+    stats_path = output_dir / 'dataset_statistics.json'
+    with open(stats_path, 'w', encoding='utf-8') as f:
+        json.dump(stats, f, indent=2, ensure_ascii=False)
+    
+    logger.info("\n" + "=" * 80)
+    logger.info("✓ STEP 1 COMPLETE")
+    logger.info("=" * 80 + "\n")
+    return True
+
+if __name__ == "__main__":
+    try:
+        success = main()
+        exit(0 if success else 1)
+    except Exception as e:
+        logger.error(f"Fatal: {e}", exc_info=True)
+        exit(1)

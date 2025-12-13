@@ -1,0 +1,37 @@
+{
+  "splits": {
+    "train": {
+      "num_samples": 8323,
+      "num_unique_tokens": 26099,
+      "vocabulary_coverage": {
+        "total_tokens": 26099,
+        "unique_tokens": 26099,
+        "estimated_coverage_pct": 90.24483696693359
+      }
+    },
+    "validation": {
+      "num_samples": 1915,
+      "num_unique_tokens": 9646,
+      "vocabulary_coverage": {
+        "total_tokens": 9646,
+        "unique_tokens": 9646,
+        "estimated_coverage_pct": 92.40099523118391
+      }
+    },
+    "test": {
+      "num_samples": 1517,
+      "num_unique_tokens": 9086,
+      "vocabulary_coverage": {
+        "total_tokens": 9086,
+        "unique_tokens": 9086,
+        "estimated_coverage_pct": 93.8036539731455
+      }
+    }
+  },
+  "total_samples": 11755,
+  "global_vocabulary_coverage": {
+    "total_tokens": 31405,
+    "unique_tokens": 31405,
+    "estimated_coverage_pct": 89.49848750199013
+  }
+}

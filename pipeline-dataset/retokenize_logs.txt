@@ -1,0 +1,80 @@
+2025-11-02 16:07:20,469 - INFO - ================================================================================
+2025-11-02 16:07:20,469 - INFO - Re-tokenize CoNLL 2002 with BETO for K-BERT NER
+2025-11-02 16:07:20,470 - INFO - ================================================================================
+2025-11-02 16:07:20,470 - INFO - 
+[TRAIN]
+2025-11-02 16:07:20,470 - WARNING -   ⚠ Input file not found: pipeline-dataset/outputs/conll2002_tsv/train.tsv
+2025-11-02 16:07:20,470 - INFO - 
+[VALIDATION]
+2025-11-02 16:07:20,471 - WARNING -   ⚠ Input file not found: pipeline-dataset/outputs/conll2002_tsv/validation.tsv
+2025-11-02 16:07:20,471 - INFO - 
+[TEST]
+2025-11-02 16:07:20,471 - WARNING -   ⚠ Input file not found: pipeline-dataset/outputs/conll2002_tsv/test.tsv
+2025-11-02 16:07:20,471 - INFO - 
+================================================================================
+2025-11-02 16:07:20,471 - INFO - RE-TOKENIZATION COMPLETE
+2025-11-02 16:07:20,471 - INFO - ================================================================================
+2025-11-02 16:07:20,472 - INFO - 
+Output directory: /home/omar/projects/K-BERT/pipeline-dataset/pipeline-dataset/outputs/conll2002_tsv_retokenized
+2025-11-02 16:07:20,472 - INFO - 
+Update config.yaml with new paths:
+2025-11-02 16:07:20,472 - INFO -   train_path: ./pipeline-dataset/outputs/conll2002_tsv_retokenized/train.tsv
+2025-11-02 16:07:20,472 - INFO -   dev_path: ./pipeline-dataset/outputs/conll2002_tsv_retokenized/validation.tsv
+2025-11-02 16:07:20,472 - INFO -   test_path: ./pipeline-dataset/outputs/conll2002_tsv_retokenized/test.tsv
+2025-11-02 16:07:20,472 - INFO - 
+================================================================================
+
+2025-11-02 16:08:56,761 - INFO - ================================================================================
+2025-11-02 16:08:56,762 - INFO - Re-tokenize CoNLL 2002 with BETO for K-BERT NER
+2025-11-02 16:08:56,762 - INFO - ================================================================================
+2025-11-02 16:08:56,762 - INFO - 
+[TRAIN]
+2025-11-02 16:08:56,762 - INFO - 
+Input: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv/train.tsv
+2025-11-02 16:08:56,763 - INFO - Output: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv_retokenized/train.tsv
+2025-11-02 16:08:56,763 - INFO - Loading BETO tokenizer from ./models/beto_uer_model
+2025-11-02 16:08:56,763 - ERROR - Fatal error: Repo id must be in the form 'repo_name' or 'namespace/repo_name': './models/beto_uer_model'. Use `repo_type` argument if needed.
+Traceback (most recent call last):
+  File "retokenize_with_beto.py", line 193, in <module>
+    main()
+  File "retokenize_with_beto.py", line 179, in main
+    success, errors = retokenize_tsv(input_file, output_file, model_path)
+  File "retokenize_with_beto.py", line 108, in retokenize_tsv
+    retokenizer = BETORetokenizer(model_path)
+  File "retokenize_with_beto.py", line 26, in __init__
+    self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/transformers/models/auto/tokenization_auto.py", line 643, in from_pretrained
+    tokenizer_config = get_tokenizer_config(pretrained_model_name_or_path, **kwargs)
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/transformers/models/auto/tokenization_auto.py", line 487, in get_tokenizer_config
+    resolved_config_file = cached_file(
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/transformers/utils/hub.py", line 417, in cached_file
+    resolved_file = hf_hub_download(
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/huggingface_hub/utils/_validators.py", line 106, in _inner_fn
+    validate_repo_id(arg_value)
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/huggingface_hub/utils/_validators.py", line 154, in validate_repo_id
+    raise HFValidationError(
+huggingface_hub.errors.HFValidationError: Repo id must be in the form 'repo_name' or 'namespace/repo_name': './models/beto_uer_model'. Use `repo_type` argument if needed.
+2025-11-02 16:10:09,316 - INFO - ================================================================================
+2025-11-02 16:10:09,316 - INFO - Re-tokenize CoNLL 2002 with BETO for K-BERT NER
+2025-11-02 16:10:09,317 - INFO - ================================================================================
+2025-11-02 16:10:09,317 - INFO - 
+[TRAIN]
+2025-11-02 16:10:09,317 - INFO - 
+Input: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv/train.tsv
+2025-11-02 16:10:09,317 - INFO - Output: /home/omar/projects/K-BERT/pipeline-dataset/outputs/conll2002_tsv_retokenized/train.tsv
+2025-11-02 16:10:09,317 - INFO - Loading BETO tokenizer from /home/omar/projects/K-BERT/models/beto_uer_model
+2025-11-02 16:10:09,319 - ERROR - Fatal error: Unrecognized model in /home/omar/projects/K-BERT/models/beto_uer_model. Should have a `model_type` key in its config.json, or contain one of the following strings in its name: albert, align, altclip, audio-spectrogram-transformer, autoformer, bart, beit, bert, bert-generation, big_bird, bigbird_pegasus, biogpt, bit, blenderbot, blenderbot-small, blip, blip-2, bloom, bridgetower, camembert, canine, chinese_clip, clap, clip, clipseg, codegen, conditional_detr, convbert, convnext, convnextv2, cpmant, ctrl, cvt, data2vec-audio, data2vec-text, data2vec-vision, deberta, deberta-v2, decision_transformer, deformable_detr, deit, deta, detr, dinat, distilbert, donut-swin, dpr, dpt, efficientformer, efficientnet, electra, encoder-decoder, ernie, ernie_m, esm, flaubert, flava, fnet, focalnet, fsmt, funnel, git, glpn, gpt-sw3, gpt2, gpt_bigcode, gpt_neo, gpt_neox, gpt_neox_japanese, gptj, gptsan-japanese, graphormer, groupvit, hubert, ibert, imagegpt, informer, jukebox, layoutlm, layoutlmv2, layoutlmv3, led, levit, lilt, llama, longformer, longt5, luke, lxmert, m2m_100, marian, markuplm, mask2former, maskformer, maskformer-swin, mbart, mctct, mega, megatron-bert, mgp-str, mobilebert, mobilenet_v1, mobilenet_v2, mobilevit, mobilevitv2, mpnet, mt5, mvp, nat, nezha, nllb-moe, nystromformer, oneformer, open-llama, openai-gpt, opt, owlvit, pegasus, pegasus_x, perceiver, pix2struct, plbart, poolformer, prophetnet, qdqbert, rag, realm, reformer, regnet, rembert, resnet, retribert, roberta, roberta-prelayernorm, roc_bert, roformer, rwkv, sam, segformer, sew, sew-d, speech-encoder-decoder, speech_to_text, speech_to_text_2, speecht5, splinter, squeezebert, swiftformer, swin, swin2sr, swinv2, switch_transformers, t5, table-transformer, tapas, time_series_transformer, timesformer, timm_backbone, trajectory_transformer, transfo-xl, trocr, tvlt, unispeech, unispeech-sat, upernet, van, videomae, vilt, vision-encoder-decoder, vision-text-dual-encoder, visual_bert, vit, vit_hybrid, vit_mae, vit_msn, wav2vec2, wav2vec2-conformer, wavlm, whisper, xclip, xglm, xlm, xlm-prophetnet, xlm-roberta, xlm-roberta-xl, xlnet, xmod, yolos, yoso
+Traceback (most recent call last):
+  File "retokenize_with_beto.py", line 194, in <module>
+    main()
+  File "retokenize_with_beto.py", line 180, in main
+    success, errors = retokenize_tsv(input_file, output_file, model_path)
+  File "retokenize_with_beto.py", line 108, in retokenize_tsv
+    retokenizer = BETORetokenizer(model_path)
+  File "retokenize_with_beto.py", line 26, in __init__
+    self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/transformers/models/auto/tokenization_auto.py", line 658, in from_pretrained
+    config = AutoConfig.from_pretrained(
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/transformers/models/auto/configuration_auto.py", line 966, in from_pretrained
+    raise ValueError(
+ValueError: Unrecognized model in /home/omar/projects/K-BERT/models/beto_uer_model. Should have a `model_type` key in its config.json, or contain one of the following strings in its name: albert, align, altclip, audio-spectrogram-transformer, autoformer, bart, beit, bert, bert-generation, big_bird, bigbird_pegasus, biogpt, bit, blenderbot, blenderbot-small, blip, blip-2, bloom, bridgetower, camembert, canine, chinese_clip, clap, clip, clipseg, codegen, conditional_detr, convbert, convnext, convnextv2, cpmant, ctrl, cvt, data2vec-audio, data2vec-text, data2vec-vision, deberta, deberta-v2, decision_transformer, deformable_detr, deit, deta, detr, dinat, distilbert, donut-swin, dpr, dpt, efficientformer, efficientnet, electra, encoder-decoder, ernie, ernie_m, esm, flaubert, flava, fnet, focalnet, fsmt, funnel, git, glpn, gpt-sw3, gpt2, gpt_bigcode, gpt_neo, gpt_neox, gpt_neox_japanese, gptj, gptsan-japanese, graphormer, groupvit, hubert, ibert, imagegpt, informer, jukebox, layoutlm, layoutlmv2, layoutlmv3, led, levit, lilt, llama, longformer, longt5, luke, lxmert, m2m_100, marian, markuplm, mask2former, maskformer, maskformer-swin, mbart, mctct, mega, megatron-bert, mgp-str, mobilebert, mobilenet_v1, mobilenet_v2, mobilevit, mobilevitv2, mpnet, mt5, mvp, nat, nezha, nllb-moe, nystromformer, oneformer, open-llama, openai-gpt, opt, owlvit, pegasus, pegasus_x, perceiver, pix2struct, plbart, poolformer, prophetnet, qdqbert, rag, realm, reformer, regnet, rembert, resnet, retribert, roberta, roberta-prelayernorm, roc_bert, roformer, rwkv, sam, segformer, sew, sew-d, speech-encoder-decoder, speech_to_text, speech_to_text_2, speecht5, splinter, squeezebert, swiftformer, swin, swin2sr, swinv2, switch_transformers, t5, table-transformer, tapas, time_series_transformer, timesformer, timm_backbone, trajectory_transformer, transfo-xl, trocr, tvlt, unispeech, unispeech-sat, upernet, van, videomae, vilt, vision-encoder-decoder, vision-text-dual-encoder, visual_bert, vit, vit_hybrid, vit_mae, vit_msn, wav2vec2, wav2vec2-conformer, wavlm, whisper, xclip, xglm, xlm, xlm-prophetnet, xlm-roberta, xlm-roberta-xl, xlnet, xmod, yolos, yoso

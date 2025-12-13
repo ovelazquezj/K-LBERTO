@@ -1,0 +1,35 @@
+# K-BERT Classification Training Configuration
+# Task: Binary Paraphrase Detection (Spanish)
+# Model: BETO (Spanish BERT)
+# Dataset: PAWS-X Spanish
+# KB: WikidataES
+
+model:
+  name: BETO
+  pretrained_path: ./models/beto_uer_model/pytorch_model.bin
+  config_path: ./models/beto_uer_model/config.json
+  vocab_path: ./models/beto_uer_model/vocab.txt
+
+data:
+  train_path: ./datasets/paws_x_spanish/train_kbert.tsv
+  dev_path: ./datasets/paws_x_spanish/validation_kbert.tsv
+  test_path: ./datasets/paws_x_spanish/test_kbert.tsv
+
+training:
+  epochs: 5
+  batch_size: 32
+  learning_rate: 2e-05
+  seq_length: 128
+
+knowledge_graph:
+  name: WikidataES_CLEAN_v251109
+  path: ./brain/kgs/WikidataES_CLEAN_v251109.spo
+
+paths:
+  output_dir: ./outputs/kbert_cls
+  models_dir: ./models
+  monitoring_dir: ./outputs/kbert_cls/monitoring
+  output_model: ./outputs/kbert_cls/kbert_beto_cls_pawsx_spanish.bin
+
+monitoring:
+  interval: 1000

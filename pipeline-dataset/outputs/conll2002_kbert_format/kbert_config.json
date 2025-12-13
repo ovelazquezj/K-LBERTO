@@ -1,0 +1,89 @@
+{
+  "task": "ner",
+  "model": "BETO",
+  "num_labels": 9,
+  "label_to_id": {
+    "O": 0,
+    "B-PER": 1,
+    "I-PER": 2,
+    "B-ORG": 3,
+    "I-ORG": 4,
+    "B-LOC": 5,
+    "I-LOC": 6,
+    "B-MISC": 7,
+    "I-MISC": 8
+  },
+  "id_to_label": {
+    "0": "O",
+    "1": "B-PER",
+    "2": "I-PER",
+    "3": "B-ORG",
+    "4": "I-ORG",
+    "5": "B-LOC",
+    "6": "I-LOC",
+    "7": "B-MISC",
+    "8": "I-MISC"
+  },
+  "statistics": {
+    "train": {
+      "total_samples": 8323,
+      "valid_samples": 8323,
+      "invalid_samples": 0,
+      "length_distribution": {
+        "min": 1,
+        "max": 1238,
+        "mean": 31.80523849573471
+      },
+      "entity_statistics": {
+        "total_entities": 32795,
+        "entities_per_sample": 3.940285954583684,
+        "entity_type_distribution": {
+          "LOC": 6804,
+          "ORG": 12382,
+          "PER": 8224,
+          "MISC": 5385
+        }
+      }
+    },
+    "validation": {
+      "total_samples": 1915,
+      "valid_samples": 1915,
+      "invalid_samples": 0,
+      "length_distribution": {
+        "min": 1,
+        "max": 141,
+        "mean": 27.63603133159269
+      },
+      "entity_statistics": {
+        "total_entities": 7567,
+        "entities_per_sample": 3.9514360313315926,
+        "entity_type_distribution": {
+          "LOC": 1321,
+          "ORG": 3066,
+          "PER": 2081,
+          "MISC": 1099
+        }
+      }
+    },
+    "test": {
+      "total_samples": 1517,
+      "valid_samples": 1517,
+      "invalid_samples": 0,
+      "length_distribution": {
+        "min": 1,
+        "max": 202,
+        "mean": 33.97033618984838
+      },
+      "entity_statistics": {
+        "total_entities": 6178,
+        "entities_per_sample": 4.07251153592617,
+        "entity_type_distribution": {
+          "LOC": 1409,
+          "ORG": 2504,
+          "MISC": 896,
+          "PER": 1369
+        }
+      }
+    }
+  }
+}

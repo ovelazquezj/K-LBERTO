@@ -1,0 +1,20 @@
+{
+  "total_samples": 8323,
+  "valid_samples": 8323,
+  "invalid_samples": 0,
+  "length_distribution": {
+    "min": 1,
+    "max": 1238,
+    "mean": 31.80523849573471
+  },
+  "entity_statistics": {
+    "total_entities": 32795,
+    "entities_per_sample": 3.940285954583684,
+    "entity_type_distribution": {
+      "LOC": 6804,
+      "ORG": 12382,
+      "PER": 8224,
+      "MISC": 5385
+    }
+  }
+}
