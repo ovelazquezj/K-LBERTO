@@ -43,7 +43,7 @@ K-LBERTO (K-BERT for Spanish - **L** for *Lengua* española) is a fork and exten
 ## Quick Start (5 Steps)
 
 For complete step-by-step instructions with code, data formats, and troubleshooting, see:
-📖 **[K-BERT Spanish Reproducibility Guide](K-BERT_ES_PREPARATION_GUIDE_ENGLISH.md)**
+**[K-BERT Spanish Reproducibility Guide](K-BERT_ES_PREPARATION_GUIDE_ENGLISH.md)**
 
 ### Step 1: Prepare Dataset
 Download PAWS-X Spanish paraphrase detection dataset and convert to K-BERT format.
@@ -167,12 +167,12 @@ All experiments are **fully reproducible** following the detailed guide:
 📖 **[K-BERT_ES_PREPARATION_GUIDE_ENGLISH.md](K-BERT_ES_PREPARATION_GUIDE_ENGLISH.md)**
 
 The guide includes:
-- ✅ Complete step-by-step commands
-- ✅ Expected outputs and timelines
-- ✅ Verification checklists
-- ✅ Troubleshooting guide
-- ✅ Methodology rationale
-- ✅ Hardware requirements and specifications
+- Complete step-by-step commands
+- Expected outputs and timelines
+- Verification checklists
+- Troubleshooting guide
+- Methodology rationale
+- Hardware requirements and specifications
 
 ### Key Features for Reproducibility
 
