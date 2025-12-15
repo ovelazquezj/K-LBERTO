@@ -155,9 +155,9 @@ class KBERTClassificationBaselineMonitor:
         print("  Dataset: PAWS-X Spanish (49k train, 2k dev, 2k test)")
         print("  Task: Binary Paraphrase Detection")
         print("  Knowledge Graph: WikidataES (500k triplets - inyectado)")
-        print("  Epochs: 5")
-        print("  Batch size: 32")
-        print("  Learning rate: 2e-05")
+        print("  Epochs: 8")
+        print("  Batch size: 16")
+        print("  Learning rate: 1e-04")
         print("  Sequence length: 128\n")
         
         cmd = self.build_training_command()
@@ -210,7 +210,7 @@ class KBERTClassificationBaselineMonitor:
                             metrics['epoch'],
                             metrics['step'],
                             metrics['loss'],
-                            '2e-05'
+                            '1e-04'
                         ])
             
             process.wait()
