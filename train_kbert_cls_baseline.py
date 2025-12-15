@@ -24,15 +24,17 @@ class KBERTClassificationBaselineMonitor:
         self.monitoring_dir = self.output_dir / "monitoring"
         self.monitoring_dir.mkdir(exist_ok=True)
 
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
         # CSV file paths
-        self.training_csv = self.output_dir / 'training_metrics.csv'
-        self.power_csv = self.output_dir / 'power_metrics.csv'
-        self.characteristics_csv = self.output_dir / 'model_characteristics.csv'
+        self.training_csv = self.output_dir / f'training_metrics_baseline_{timestamp}.csv'
+        self.power_csv = self.output_dir / f'power_metrics_baseline_{timestamp}.csv'
+        self.characteristics_csv = self.output_dir / f'model_characteristics_baseline_{timestamp}.csv'
         
         # Log file
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
         self.log_file = self.output_dir / f'training_baseline_{timestamp}.log'
-        self.tegrastats_log = self.monitoring_dir / f'tegrastats_{timestamp}.log'
+        self.tegrastats_log = self.monitoring_dir / f'tegrastats_baseline_{timestamp}.log'
         
         print(f"✓ Output directory: {self.output_dir}")
         print(f"✓ Monitoring directory: {self.monitoring_dir}")
@@ -133,9 +135,10 @@ class KBERTClassificationBaselineMonitor:
             "--train_path ./datasets/paws_x_spanish/train_kbert.tsv",
             "--dev_path ./datasets/paws_x_spanish/validation_kbert.tsv",
             "--test_path ./datasets/paws_x_spanish/test_kbert.tsv",
-            "--epochs_num 5",
+            "--epochs_num 8",
             "--batch_size 16",
-            "--learning_rate 5e-05",
+            "--learning_rate 1e-04",
+            "--warmup 0.05",
             "--kg_name ./brain/kgs/WikidataES_CLEAN_v251109.spo",
             "--output_model_path ./outputs/kbert_cls/kbert_beto_cls_baseline.bin",
             "--seq_length 128"
