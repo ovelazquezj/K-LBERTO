@@ -1,4 +1,7 @@
 # Models and Triplets
+.*~
+*~
+*.bin
 models/
 datasets/
 *.spo

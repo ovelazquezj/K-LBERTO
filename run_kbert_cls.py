@@ -1,8 +1,23 @@
 # -*- encoding:utf-8 -*-
 """
-K-BERT Classification Training for Spanish (PAWS-X Paraphrase Detection)
-Compatible with BETO model and WikidataES knowledge graph
+K-BERT Classification Training for Spanish (TASS Sentiment Analysis)
+MODIFIED: Added word_level=True to KnowledgeGraph for Spanish word-level tokenization
+Compatible with BETO model and TASS sentiment knowledge graph
 Supports visible matrix for knowledge graph injection
+
+CRITICAL FIX (Diciembre 27, 2025):
+Fixed segment embedding issue for single-sentence classification (len(line)==2)
+PROBLEM: mask was [0,1,1,1...] telling model real tokens are in "segment 1"
+         But single-sentence should use segment 0 for all real tokens
+SOLUTION: mask now [0,0,0...] for all tokens (consistent single segment)
+
+CRITICAL FIX #2 (Diciembre 27, 2025 - CLASS IMBALANCE):
+PROBLEM: NLLLoss() sin pesos → modelo predice siempre clase mayoritaria (0)
+REASON: Clase 0 = 41.6% dataset. Predecir siempre clase 0 = 41.6% accuracy
+        Intentar discriminar = loss más alto. Modelo elige no aprender.
+SOLUTION: NLLLoss(weight=class_weights) con weights inversamente proporcionales
+         Clase mayoritaria = peso menor, clases menores = peso mayor
+         Ahora discriminar tiene mejor loss que colapsar
 """
 import sys
 import torch
@@ -25,7 +40,7 @@ import numpy as np
 
 
 class BertClassifier(nn.Module):
-    def __init__(self, args, model):
+    def __init__(self, args, model, class_weights=None):
         super(BertClassifier, self).__init__()
         self.embedding = model.embedding
         self.encoder = model.encoder
@@ -34,7 +49,15 @@ class BertClassifier(nn.Module):
         self.output_layer_1 = nn.Linear(args.hidden_size, args.hidden_size)
         self.output_layer_2 = nn.Linear(args.hidden_size, args.labels_num)
         self.softmax = nn.LogSoftmax(dim=-1)
-        self.criterion = nn.NLLLoss()
+        
+        # CRITICAL FIX #2: Usar class_weights para balancear clases
+        if class_weights is not None:
+            self.criterion = nn.NLLLoss(weight=class_weights)
+            print(f"[BertClassifier] NLLLoss with class weights: {class_weights}")
+        else:
+            self.criterion = nn.NLLLoss()
+            print("[BertClassifier] NLLLoss sin weights (AVISO: puede colapsar a clase mayoritaria)")
+        
         self.use_vm = False if args.no_vm else True
         print("[BertClassifier] use visible_matrix: {}".format(self.use_vm))
 
@@ -47,10 +70,28 @@ class BertClassifier(nn.Module):
         """
         # Embedding.
         emb = self.embedding(src, mask, pos)
+        
+         # DEBUG: Verificar si embeddings son diferentes
+        if label is not None and label.size(0) > 1:
+            print(f"\n[DEBUG EMBEDDINGS]")
+            print(f"  emb[0, 0, :5]: {emb[0, 0, :5]}")
+            print(f"  emb[1, 0, :5]: {emb[1, 0, :5]}")
+            print(f"  ¿Idénticos? {torch.allclose(emb[0], emb[1], atol=1e-4)}")
+    
+        
         # Encoder.
         if not self.use_vm:
             vm = None
         output = self.encoder(emb, mask, vm)
+        
+         # DEBUG: Verificar si encoder output es diferente
+        if label is not None and label.size(0) > 1:
+            print(f"[DEBUG ENCODER OUTPUT]")
+            print(f"  output[0, 0, :5]: {output[0, 0, :5]}")
+            print(f"  output[1, 0, :5]: {output[1, 0, :5]}")
+            print(f"  ¿Idénticos? {torch.allclose(output[0], output[1], atol=1e-4)}")
+      
+        
         # Target.
         if self.pooling == "mean":
             output = torch.mean(output, dim=1)
@@ -60,8 +101,35 @@ class BertClassifier(nn.Module):
             output = output[:, -1, :]
         else:
             output = output[:, 0, :]
+            
+        # DEBUG: Después del pooling
+        if label is not None and output.size(0) > 1:
+            print(f"[DEBUG AFTER POOLING]")
+            print(f"  output[0]: {output[0, :5]}")
+            print(f"  output[1]: {output[1, :5]}")
+            print(f"  ¿Idénticos? {torch.allclose(output[0], output[1], atol=1e-4)}")
+    
+    
         output = torch.tanh(self.output_layer_1(output))
+    
+        # DEBUG: Antes de output_layer_2
+        if label is not None and output.size(0) > 1:
+            print(f"[DEBUG PRE-OUTPUT_LAYER_2]")
+            print(f"  output_layer_2.weight shape: {self.output_layer_2.weight.shape}")
+            print(f"  output_layer_2.weight[0, :5]: {self.output_layer_2.weight[0, :5]}")
+            print(f"  output_layer_2.bias: {self.output_layer_2.bias}")
+            print(f"  input[0, :5]: {output[0, :5]}")
+            print(f"  input[1, :5]: {output[1, :5]}\n")
+
+    
         logits = self.output_layer_2(output)
+        
+        # DEBUG: Después de output_layer_2
+        if label is not None and logits.size(0) > 1:
+            print(f"[DEBUG POST-OUTPUT_LAYER_2]")
+            print(f"  logits[0]: {logits[0]}")
+            print(f"  logits[1]: {logits[1]}\n")
+        
         loss = self.criterion(self.softmax(logits.view(-1, self.labels_num)), label.view(-1))
         return loss, logits
 
@@ -88,7 +156,26 @@ def add_knowledge_worker(params):
                 vm = vm[0].astype("bool")
 
                 token_ids = [vocab.get(t) for t in tokens]
-                mask = [1 if t != PAD_TOKEN else 0 for t in tokens]
+                # ========== CRITICAL FIX ==========
+                # BEFORE (WRONG):
+                #   mask = [1 if t != PAD_TOKEN else 0 for t in tokens]
+                #   Created: [0, 1, 1, 1, 1, ..., 0]
+                #   Problem: All real tokens had segment=1, PAD had segment=0
+                #
+                # WHY IT WAS WRONG:
+                #   In embeddings.py: seg_emb = self.segment_embedding(seg)
+                #   segment_embedding has size (3, emb_size) → accepts indices [0, 1, 2]
+                #   But the logic was: PAD→0, real_tokens→1, additional_segments→2,3,...
+                #   For BERT single-sentence: ALL tokens should be SAME segment
+                #   Having PAD as different segment than real tokens confused the model
+                #
+                # AFTER (CORRECT):
+                #   mask = [0 if t != PAD_TOKEN else 0 for t in tokens]
+                #   Creates: [0, 0, 0, 0, 0, ..., 0]  (all same segment)
+                #   Meaning: All tokens (including PAD) are in segment 0
+                #   This is correct for single-sentence classification
+                # =================================
+                mask = [0 if t != PAD_TOKEN else 0 for t in tokens]
 
                 dataset.append((token_ids, label, mask, pos, vm))
 
@@ -167,7 +254,7 @@ def main():
     # Model options.
     parser.add_argument("--batch_size", type=int, default=32,
                         help="Batch size.")
-    parser.add_argument("--seq_length", type=int, default=256,
+    parser.add_argument("--seq_length", type=int, default=128,
                         help="Sequence length.")
     parser.add_argument("--encoder", choices=["bert", "lstm", "gru", \
                                                    "cnn", "gatedcnn", "attn", \
@@ -263,18 +350,15 @@ def main():
             if 'gamma' not in n and 'beta' not in n:
                 p.data.normal_(0, 0.02)
 
-    # Build classification model.
-    model = BertClassifier(args, model)
+    # Build knowledge graph (early, needed for training data loading)
+    if args.kg_name == 'none':
+        spo_files = []
+    else:
+        spo_files = [args.kg_name]
+    
+    kg = KnowledgeGraph(spo_files=spo_files, predicate=True, word_level=True)
 
-    # For simplicity, we use DataParallel wrapper to use multiple GPUs.
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    if torch.cuda.device_count() > 1:
-        print("{} GPUs are available. Let's use them.".format(torch.cuda.device_count()))
-        model = nn.DataParallel(model)
-
-    model = model.to(device)
-
-    # Datset loader.
+    # Dataset loader functions
     def batch_loader(batch_size, input_ids, label_ids, mask_ids, pos_ids, vms):
         instances_num = input_ids.size()[0]
         for i in range(instances_num // batch_size):
@@ -292,13 +376,6 @@ def main():
             vms_batch = vms[instances_num//batch_size*batch_size:]
 
             yield input_ids_batch, label_ids_batch, mask_ids_batch, pos_ids_batch, vms_batch
-
-    # Build knowledge graph.
-    if args.kg_name == 'none':
-        spo_files = []
-    else:
-        spo_files = [args.kg_name]
-    kg = KnowledgeGraph(spo_files=spo_files, predicate=True)
 
     def read_dataset(path, workers_num=1):
 
@@ -367,13 +444,25 @@ def main():
                 with torch.no_grad():
                     try:
                         loss, logits = model(input_ids_batch, label_ids_batch, mask_ids_batch, pos_ids_batch, vms_batch)
-                    except:
+                    except Exception as e:
+                        print(f"Error en batch {i}: {e}")
                         print(input_ids_batch)
                         print(input_ids_batch.size())
                         print(vms_batch)
                         print(vms_batch.size())
+                        raise
 
                 logits = nn.Softmax(dim=1)(logits)
+                # DEBUG: Print logits y predicciones para primeros ejemplos
+                if i == 0:  # Solo primer batch
+                    print("\n[DEBUG] PRIMEROS 5 EJEMPLOS DEL BATCH:")
+                    for j in range(min(5, logits.size(0))):
+                        print(f"  Ejemplo {j}:")
+                        print(f"    Label real: {label_ids_batch[j].item()}")
+                        print(f"    Logits softmax: {logits[j].cpu().numpy()}")
+                        print(f"    Predicción: {torch.argmax(logits[j]).item()}")
+                        print(f"    Confianza: {logits[j].max().item():.4f}")
+                    print()
                 pred = torch.argmax(logits, dim=1)
                 gold = label_ids_batch
                 for j in range(pred.size()[0]):
@@ -386,12 +475,21 @@ def main():
                 print("Report precision, recall, and f1:")
 
             for i in range(confusion.size()[0]):
-                p = confusion[i,i].item()/confusion[i,:].sum().item()
-                r = confusion[i,i].item()/confusion[:,i].sum().item()
-                f1 = 2*p*r / (p+r)
-                if i == 1:
-                    label_1_f1 = f1
-                print("Label {}: {:.3f}, {:.3f}, {:.3f}".format(i,p,r,f1))
+                # MODIFIED: Protected division by zero for imbalanced classes
+                # REASON: Spanish dataset may have classes with no predictions
+                row_sum = confusion[i,:].sum().item()
+                col_sum = confusion[:,i].sum().item()
+
+                if row_sum > 0 and col_sum > 0:
+                    p = confusion[i,i].item() / row_sum
+                    r = confusion[i,i].item() / col_sum
+                    f1 = 2*p*r / (p+r) if (p+r) > 0 else 0
+                    if i == 1:
+                        label_1_f1 = f1
+                    print("Label {}: {:.3f}, {:.3f}, {:.3f}".format(i,p,r,f1))
+                else:
+                    print("Label {}: No samples in this class (skipped)".format(i))
+
             print("Acc. (Correct/Total): {:.4f} ({}/{}) ".format(correct/len(dataset), correct, len(dataset)))
             if metrics == 'Acc':
                 return correct/len(dataset)
@@ -497,6 +595,28 @@ def main():
     # Training phase.
     print("Start training.")
     trainset = read_dataset(args.train_path, workers_num=args.workers_num)
+    
+    # CRITICAL FIX #2: Calcular class weights para balancear clases
+    print("\n" + "="*80)
+    print("CALCULATING CLASS WEIGHTS FOR IMBALANCED DATASET")
+    print("="*80)
+    class_counts = collections.Counter([sample[1] for sample in trainset])
+    print(f"\nClass distribution in training set:")
+    for class_id in sorted(class_counts.keys()):
+        count = class_counts[class_id]
+        pct = 100 * count / len(trainset)
+        print(f"  Clase {class_id}: {count} muestras ({pct:.1f}%)")
+    
+    total_samples = len(trainset)
+    class_weights = torch.tensor(
+        [total_samples / (len(class_counts) * class_counts[i]) for i in range(args.labels_num)],
+        dtype=torch.float
+    )
+    print(f"\nClass weights (inverse frequency):")
+    for class_id in range(args.labels_num):
+        print(f"  Clase {class_id}: {class_weights[class_id]:.4f}")
+    print("="*80 + "\n")
+    
     print("Shuffling dataset")
     random.shuffle(trainset)
     instances_num = len(trainset)
@@ -519,6 +639,17 @@ def main():
     print("Batch size: ", batch_size)
     print("The number of training instances:", instances_num)
 
+    # Build classification model CON class_weights
+    model = BertClassifier(args, model, class_weights=class_weights)
+
+    # For simplicity, we use DataParallel wrapper to use multiple GPUs.
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.device_count() > 1:
+        print("{} GPUs are available. Let's use them.".format(torch.cuda.device_count()))
+        model = nn.DataParallel(model)
+
+    model = model.to(device)
+
     param_optimizer = list(model.named_parameters())
     no_decay = ['bias', 'gamma', 'beta']
     optimizer_grouped_parameters = [
@@ -534,6 +665,26 @@ def main():
     for epoch in range(1, args.epochs_num+1):
         model.train()
         for i, (input_ids_batch, label_ids_batch, mask_ids_batch, pos_ids_batch, vms_batch) in enumerate(batch_loader(batch_size, input_ids, label_ids, mask_ids, pos_ids, vms)):
+            
+            # DEBUG: Verificar si inputs son diferentes
+            if i == 0:
+                print("\n[DEBUG INPUTS] Primeros 3 ejemplos del batch:")
+                for j in range(min(3, input_ids_batch.size(0))):
+                    print(f"  Ejemplo {j}:")
+                    print(f"    input_ids: {input_ids_batch[j][:20]}...")  # Primeros 20 tokens
+                    print(f"    label: {label_ids_batch[j].item()}")
+                    print(f"    pos_ids: {pos_ids_batch[j][:20]}...")
+            
+                    # Verificar si son idénticos
+                    if j == 0:
+                        first_input = input_ids_batch[j]
+                    else:
+                        if (first_input == input_ids_batch[j]).all():
+                            print(f"    ⚠️ IDÉNTICO AL EJEMPLO 0")
+                        else:
+                            print(f"    ✓ Diferente del ejemplo 0")
+                print()
+            
             model.zero_grad()
 
             vms_batch = torch.LongTensor(vms_batch)
@@ -578,3 +729,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
