@@ -18,6 +18,13 @@ REASON: Clase 0 = 41.6% dataset. Predecir siempre clase 0 = 41.6% accuracy
 SOLUTION: NLLLoss(weight=class_weights) con weights inversamente proporcionales
          Clase mayoritaria = peso menor, clases menores = peso mayor
          Ahora discriminar tiene mejor loss que colapsar
+
+PATCHES v7 (Diciembre 28, 2025):
+FIX #1: Quitar view() redundante en loss calculation (línea 140)
+FIX #2: Agregar dropout en output layers para reducir overfitting
+FIX #3: Simplificar máscara (line 220) de confusa a clara
+FIX #4: Agregar verificación de colapso a clase mayoritaria en evaluate()
+FIX #5: Aumentar epochs a 10 (se ejecuta via script)
 """
 import sys
 import torch
@@ -46,10 +53,14 @@ class BertClassifier(nn.Module):
         self.encoder = model.encoder
         self.labels_num = args.labels_num
         self.pooling = args.pooling
+        
+        # FIX #2: Agregar dropout
+        self.dropout = nn.Dropout(args.dropout)
+        
         self.output_layer_1 = nn.Linear(args.hidden_size, args.hidden_size)
         self.output_layer_2 = nn.Linear(args.hidden_size, args.labels_num)
         self.softmax = nn.LogSoftmax(dim=-1)
-        
+
         # CRITICAL FIX #2: Usar class_weights para balancear clases
         if class_weights is not None:
             self.criterion = nn.NLLLoss(weight=class_weights)
@@ -57,7 +68,7 @@ class BertClassifier(nn.Module):
         else:
             self.criterion = nn.NLLLoss()
             print("[BertClassifier] NLLLoss sin weights (AVISO: puede colapsar a clase mayoritaria)")
-        
+
         self.use_vm = False if args.no_vm else True
         print("[BertClassifier] use visible_matrix: {}".format(self.use_vm))
 
@@ -70,28 +81,28 @@ class BertClassifier(nn.Module):
         """
         # Embedding.
         emb = self.embedding(src, mask, pos)
-        
+
          # DEBUG: Verificar si embeddings son diferentes
         if label is not None and label.size(0) > 1:
             print(f"\n[DEBUG EMBEDDINGS]")
             print(f"  emb[0, 0, :5]: {emb[0, 0, :5]}")
             print(f"  emb[1, 0, :5]: {emb[1, 0, :5]}")
             print(f"  ¿Idénticos? {torch.allclose(emb[0], emb[1], atol=1e-4)}")
-    
-        
+
+
         # Encoder.
         if not self.use_vm:
             vm = None
         output = self.encoder(emb, mask, vm)
-        
+
          # DEBUG: Verificar si encoder output es diferente
         if label is not None and label.size(0) > 1:
             print(f"[DEBUG ENCODER OUTPUT]")
             print(f"  output[0, 0, :5]: {output[0, 0, :5]}")
             print(f"  output[1, 0, :5]: {output[1, 0, :5]}")
             print(f"  ¿Idénticos? {torch.allclose(output[0], output[1], atol=1e-4)}")
-      
-        
+
+
         # Target.
         if self.pooling == "mean":
             output = torch.mean(output, dim=1)
@@ -101,17 +112,20 @@ class BertClassifier(nn.Module):
             output = output[:, -1, :]
         else:
             output = output[:, 0, :]
-            
+
         # DEBUG: Después del pooling
         if label is not None and output.size(0) > 1:
             print(f"[DEBUG AFTER POOLING]")
             print(f"  output[0]: {output[0, :5]}")
             print(f"  output[1]: {output[1, :5]}")
             print(f"  ¿Idénticos? {torch.allclose(output[0], output[1], atol=1e-4)}")
-    
-    
+
+
         output = torch.tanh(self.output_layer_1(output))
-    
+        
+        # FIX #2: Agregar dropout después del tanh
+        output = self.dropout(output)
+
         # DEBUG: Antes de output_layer_2
         if label is not None and output.size(0) > 1:
             print(f"[DEBUG PRE-OUTPUT_LAYER_2]")
@@ -121,16 +135,17 @@ class BertClassifier(nn.Module):
             print(f"  input[0, :5]: {output[0, :5]}")
             print(f"  input[1, :5]: {output[1, :5]}\n")
 
-    
+
         logits = self.output_layer_2(output)
-        
+
         # DEBUG: Después de output_layer_2
         if label is not None and logits.size(0) > 1:
             print(f"[DEBUG POST-OUTPUT_LAYER_2]")
             print(f"  logits[0]: {logits[0]}")
             print(f"  logits[1]: {logits[1]}\n")
-        
-        loss = self.criterion(self.softmax(logits.view(-1, self.labels_num)), label.view(-1))
+
+        # FIX #1: Quitar view() redundante - logits ya tiene forma correcta
+        loss = self.criterion(self.softmax(logits), label)
         return loss, logits
 
 
@@ -170,12 +185,13 @@ def add_knowledge_worker(params):
                 #   Having PAD as different segment than real tokens confused the model
                 #
                 # AFTER (CORRECT):
-                #   mask = [0 if t != PAD_TOKEN else 0 for t in tokens]
-                #   Creates: [0, 0, 0, 0, 0, ..., 0]  (all same segment)
-                #   Meaning: All tokens (including PAD) are in segment 0
+                #   All tokens in segment 0 (including PAD)
                 #   This is correct for single-sentence classification
                 # =================================
-                mask = [0 if t != PAD_TOKEN else 0 for t in tokens]
+                
+                # FIX #3: Simplificar máscara - clarificar intención
+                # Todos los tokens en segment 0 (single-sentence classification)
+                mask = [0 for t in tokens]
 
                 dataset.append((token_ids, label, mask, pos, vm))
 
@@ -355,7 +371,7 @@ def main():
         spo_files = []
     else:
         spo_files = [args.kg_name]
-    
+
     kg = KnowledgeGraph(spo_files=spo_files, predicate=True, word_level=True)
 
     # Dataset loader functions
@@ -406,11 +422,12 @@ def main():
         return dataset
 
     # Evaluation function.
-    def evaluate(args, is_test, metrics='Acc'):
-        if is_test:
-            dataset = read_dataset(args.test_path, workers_num=args.workers_num)
-        else:
-            dataset = read_dataset(args.dev_path, workers_num=args.workers_num)
+    def evaluate(args, is_test, metrics='Acc', dataset=None):
+        if dataset is None:
+            if is_test:
+                dataset = read_dataset(args.test_path, workers_num=args.workers_num)
+            else:
+                dataset = read_dataset(args.dev_path, workers_num=args.workers_num)
 
         input_ids = torch.LongTensor([sample[0] for sample in dataset])
         label_ids = torch.LongTensor([sample[1] for sample in dataset])
@@ -491,10 +508,45 @@ def main():
                     print("Label {}: No samples in this class (skipped)".format(i))
 
             print("Acc. (Correct/Total): {:.4f} ({}/{}) ".format(correct/len(dataset), correct, len(dataset)))
+            
+            # FIX #4: Agregar verificación de colapso a clase mayoritaria
+            print("\n" + "="*80)
+            print("VERIFICACIÓN DE COLAPSO A CLASE MAYORITARIA")
+            print("="*80)
+            
+            # Calcular distribución de clases reales en el dataset
+            real_class_dist = torch.zeros(args.labels_num)
+            for sample in dataset:
+                real_class_dist[sample[1]] += 1
+            real_class_dist = real_class_dist / len(dataset)
+            
+            majority_class_id = real_class_dist.argmax().item()
+            majority_class_acc = real_class_dist.max().item()
+            current_acc = correct / len(dataset)
+            
+            print(f"Clase mayoritaria en dataset: {majority_class_id}")
+            print(f"Frecuencia de clase mayoritaria: {majority_class_acc:.4f}")
+            print(f"Accuracy actual del modelo: {current_acc:.4f}")
+            print(f"Diferencia: {abs(current_acc - majority_class_acc):.4f}")
+            
+            if abs(current_acc - majority_class_acc) < 0.05:
+                print("\n⚠️  ALERTA: Modelo está COLAPSANDO a clase mayoritaria")
+                print(f"   El modelo predice casi igual que predecir siempre clase {majority_class_id}")
+                print(f"   Revisa confusion matrix arriba para ver qué sucede")
+                print(f"   Posibles causas:")
+                print(f"   - Learning rate muy pequeño")
+                print(f"   - Logits demasiado pequeños")
+                print(f"   - Knowledge graph no se inyecta correctamente")
+                print(f"   - Necesita más epochs para entrenar")
+            else:
+                print("\n✓ Modelo está discriminando entre clases (diferencia > 0.05)")
+            
+            print("="*80 + "\n")
+            
             if metrics == 'Acc':
                 return correct/len(dataset)
             elif metrics == 'f1':
-                return label_1_f1
+                return label_1_f1 if 'label_1_f1' in locals() else 0
             else:
                 return correct/len(dataset)
         else:
@@ -595,7 +647,7 @@ def main():
     # Training phase.
     print("Start training.")
     trainset = read_dataset(args.train_path, workers_num=args.workers_num)
-    
+
     # CRITICAL FIX #2: Calcular class weights para balancear clases
     print("\n" + "="*80)
     print("CALCULATING CLASS WEIGHTS FOR IMBALANCED DATASET")
@@ -606,7 +658,7 @@ def main():
         count = class_counts[class_id]
         pct = 100 * count / len(trainset)
         print(f"  Clase {class_id}: {count} muestras ({pct:.1f}%)")
-    
+
     total_samples = len(trainset)
     class_weights = torch.tensor(
         [total_samples / (len(class_counts) * class_counts[i]) for i in range(args.labels_num)],
@@ -616,7 +668,7 @@ def main():
     for class_id in range(args.labels_num):
         print(f"  Clase {class_id}: {class_weights[class_id]:.4f}")
     print("="*80 + "\n")
-    
+
     print("Shuffling dataset")
     random.shuffle(trainset)
     instances_num = len(trainset)
@@ -665,7 +717,7 @@ def main():
     for epoch in range(1, args.epochs_num+1):
         model.train()
         for i, (input_ids_batch, label_ids_batch, mask_ids_batch, pos_ids_batch, vms_batch) in enumerate(batch_loader(batch_size, input_ids, label_ids, mask_ids, pos_ids, vms)):
-            
+
             # DEBUG: Verificar si inputs son diferentes
             if i == 0:
                 print("\n[DEBUG INPUTS] Primeros 3 ejemplos del batch:")
@@ -674,7 +726,7 @@ def main():
                     print(f"    input_ids: {input_ids_batch[j][:20]}...")  # Primeros 20 tokens
                     print(f"    label: {label_ids_batch[j].item()}")
                     print(f"    pos_ids: {pos_ids_batch[j][:20]}...")
-            
+
                     # Verificar si son idénticos
                     if j == 0:
                         first_input = input_ids_batch[j]
@@ -684,7 +736,7 @@ def main():
                         else:
                             print(f"    ✓ Diferente del ejemplo 0")
                 print()
-            
+
             model.zero_grad()
 
             vms_batch = torch.LongTensor(vms_batch)
@@ -729,4 +781,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

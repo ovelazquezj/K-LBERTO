@@ -1,0 +1,162 @@
+════════════════════════════════════════════════════════════════════════════════
+PASO 5 v8 - RESUMEN DE RESULTADOS
+════════════════════════════════════════════════════════════════════════════════
+Timestamp: 20251227_200045
+Tiempo total de ejecución: 93m 58s
+Código de salida: 0
+
+════════════════════════════════════════════════════════════════════════════════
+CONFIGURACIÓN DEL ENTRENAMIENTO
+════════════════════════════════════════════════════════════════════════════════
+  Epochs: 10 (AUMENTADO de 5 para que crezcan logits)
+  Batch size: 8
+  Learning rate: 5e-05
+  Seq length: 128
+  Optimizer: BertAdam
+  Loss function: NLLLoss con class_weights
+  Dropout: 0.5 (AGREGADO a output layers)
+
+════════════════════════════════════════════════════════════════════════════════
+DATASET
+════════════════════════════════════════════════════════════════════════════════
+  Train: 900 samples
+  Dev/Test: 225 samples cada uno
+
+════════════════════════════════════════════════════════════════════════════════
+LOSS DURANTE ENTRENAMIENTO (CSV)
+════════════════════════════════════════════════════════════════════════════════
+epoch,step,avg_loss
+1,100,1.456
+2,100,2.743
+3,100,2.663
+4,100,2.577
+5,100,2.416
+6,100,2.138
+7,100,1.966
+8,100,1.756
+9,100,1.616
+10,100,1.520
+
+════════════════════════════════════════════════════════════════════════════════
+MATRIZ DE CONFUSIÓN - FINAL
+════════════════════════════════════════════════════════════════════════════════
+
+================================================================================
+VERIFICACIÓN DE COLAPSO A CLASE MAYORITARIA
+================================================================================
+Clase mayoritaria en dataset: 0
+Frecuencia de clase mayoritaria: 0.4235
+Accuracy actual del modelo: 0.5596
+Diferencia: 0.1361
+
+✓ Modelo está discriminando entre clases (diferencia > 0.05)
+
+════════════════════════════════════════════════════════════════════════════════
+F1 SCORES POR CLASE - FINAL
+════════════════════════════════════════════════════════════════════════════════
+Label 0: 0.562, 0.877, 0.685
+Label 1: 0.795, 0.302, 0.438
+Label 2: 0.429, 0.296, 0.350
+Label 3: 0.420, 0.407, 0.413
+
+════════════════════════════════════════════════════════════════════════════════
+ACCURACY FINAL
+════════════════════════════════════════════════════════════════════════════════
+Acc. (Correct/Total): 0.5596 (366/654) 
+
+════════════════════════════════════════════════════════════════════════════════
+VERIFICACIÓN DE COLAPSO A CLASE MAYORITARIA
+════════════════════════════════════════════════════════════════════════════════
+VERIFICACIÓN DE COLAPSO A CLASE MAYORITARIA
+================================================================================
+Clase mayoritaria en dataset: 0
+Frecuencia de clase mayoritaria: 0.4235
+Accuracy actual del modelo: 0.3532
+Diferencia: 0.0703
+
+✓ Modelo está discriminando entre clases (diferencia > 0.05)
+================================================================================
+
+Start evaluation on test dataset.
+Loading sentences from /home/omar/projects/K-LBERTO/datasets/tass_spanish/test.tsv
+There are 654 sentence in total. We use 1 processes to inject knowledge into sentences.
+Progress of process 0: 0/654
+The number of evaluation instances:  654
+
+════════════════════════════════════════════════════════════════════════════════
+PRÓXIMOS PASOS
+════════════════════════════════════════════════════════════════════════════════
+
+1. Revisar F1 scores para clases 1, 2, 3:
+   - Si F1 > 0.3 para alguna clase: ✓ Modelo está aprendiendo
+   - Si F1 = 0 para todas: ✗ Sigue colapsando
+
+2. Revisar logits finales (más grandes que v6?):
+   - v6: rango [-1.2, +1.3] (muy pequeños)
+   - v7: esperar rango más grande o distribución más peaky
+
+3. Revisar confusion matrix:
+   - Si predicciones solo en clase 0: modelo colapsa
+   - Si predicciones en clases 1,2,3: modelo discrimina
+
+4. Revisar verificación de colapso:
+   - Si ALERTA: investigar knowledge graph o learning rate
+   - Si ✓: continuar a PASO 6 (ablation studies)
+
+5. Comparar loss progression:
+   - v6: 1.482 → 1.638 → 1.608 → 1.586 → 1.573 (aumenta en epoch 2)
+   - v7: esperar que baje monotónicamente
+
+DECISIÓN:
+- Si loss baja continuamente: ✓ Ajuste exitoso, evaluar resultados finales
+- Si F1 > 0.3 en clases 1-3: ✓ PASO 6 (ablation studies)
+- Si F1 0.15-0.30: PASO 8b (aumentar cobertura KG a 5-10%)
+- Si diverge nuevamente: PASO 8c (investigar arquitectura/embeddings)
+
+AJUSTES APLICADOS v7 → v8:
+- Learning rate: 5e-05 → 1e-05 (5x menor para convergencia estable)
+- Dropout: 0.5 → 0.3 (menos agresivo, mayor flexibilidad)
+- Razón: Dataset 2.4x más grande requiere gradientes más pequeños
+- Esperado: Loss baja monótonamente (NO diverge como v7)
+
+Si v8 diverge de nuevo:
+- Revisar inicialización de pesos en embedding layers
+- Verificar que visible_matrix en KnowledgeGraph no esté colapsada
+- Considerar warm-up learning rate (primeras épocas con LR más alto)
+- Investigar si KG causa distorsión en embeddings intermedios
+
+# Resumen en pantalla
+echo ""
+echo "════════════════════════════════════════════════════════════════════════════════"
+echo "RESUMEN FINAL"
+echo "════════════════════════════════════════════════════════════════════════════════"
+echo ""
+echo "✓ Entrenamiento completado en ${MINUTES}m ${SECONDS}s"
+echo ""
+echo "📊 Archivos de resultado:"
+echo "  - Full log: $FULL_LOG"
+echo "  - Debug log: $DEBUG_LOG"
+echo "  - Loss CSV: $LOSS_CSV"
+echo "  - Metrics summary: $METRICS_FILE"
+echo ""
+echo "🔍 Para revisar resultados:"
+echo "  cat $METRICS_FILE"
+echo ""
+echo "📈 Para ver loss progression:"
+echo "  cat $LOSS_CSV"
+echo ""
+echo "🐛 Para ver debug details:"
+echo "  tail -100 $FULL_LOG | grep -A 5 'DEBUG'"
+echo ""
+echo "════════════════════════════════════════════════════════════════════════════════"
+
+# Salir con el código de error original si hubo problema
+if [ $EXIT_CODE -ne 0 ]; then
+    echo ""
+    echo "⚠️  ADVERTENCIA: El script finalizó con código de error: $EXIT_CODE"
+    exit $EXIT_CODE
+fi
+
+echo ""
+echo "✅ PASO 5 v8 COMPLETADO"
+echo ""

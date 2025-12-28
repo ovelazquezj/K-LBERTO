@@ -1,0 +1,117 @@
+╔════════════════════════════════════════════════════════════╗
+║              MÉTRICAS FINALES - RESUMEN                    ║
+╚════════════════════════════════════════════════════════════╝
+
+Timestamp: 20251227_005436
+Fecha: sáb 27 dic 2025 01:20:36 CST
+
+════════════════════════════════════════════════════════
+CONFIGURACIÓN DEL ENTRENAMIENTO
+════════════════════════════════════════════════════════
+  Epochs: 5
+  Batch size: 8
+  Learning rate: 5e-05
+  Seq length: 128
+  Optimizer: BertAdam
+  Loss function: NLLLoss con class_weights
+  Class weights: [inverse frequency de cada clase]
+
+════════════════════════════════════════════════════════
+DATASET
+════════════════════════════════════════════════════════
+  Train: 900 samples (Clase 0: 41.6%, 1: 31.3%, 2: 12.5%, 3: 14.4%)
+  Test: 225 samples (misma distribución)
+
+════════════════════════════════════════════════════════
+LOSS DURANTE ENTRENAMIENTO
+════════════════════════════════════════════════════════
+Epoch id: 1, Training steps: 100, Avg loss: 1.482
+Epoch id: 2, Training steps: 100, Avg loss: 1.638
+Epoch id: 3, Training steps: 100, Avg loss: 1.608
+Epoch id: 4, Training steps: 100, Avg loss: 1.586
+Epoch id: 5, Training steps: 100, Avg loss: 1.573
+
+════════════════════════════════════════════════════════
+MATRIZ DE CONFUSIÓN - FINAL
+════════════════════════════════════════════════════════
+Report precision, recall, and f1:
+--
+Confusion matrix:
+tensor([[99, 72, 27, 27],
+        [ 0,  0,  0,  0],
+        [ 0,  0,  0,  0],
+        [ 0,  0,  0,  0]])
+Report precision, recall, and f1:
+
+════════════════════════════════════════════════════════
+F1 SCORES POR CLASE - FINAL
+════════════════════════════════════════════════════════
+    Label real: 0
+    Label real: 0
+Label 0: 0.440, 1.000, 0.611
+Label 1: No samples in this class (skipped)
+Label 2: No samples in this class (skipped)
+Label 3: No samples in this class (skipped)
+
+════════════════════════════════════════════════════════
+ACCURACY FINAL
+════════════════════════════════════════════════════════
+Acc. (Correct/Total): 0.4400 (99/225) 
+Acc. (Correct/Total): 0.4400 (99/225) 
+Acc. (Correct/Total): 0.4400 (99/225) 
+
+════════════════════════════════════════════════════════
+LOGITS EN EVALUACIÓN (Primeros 3 ejemplos)
+════════════════════════════════════════════════════════
+[DEBUG POST-OUTPUT_LAYER_2]
+  logits[0]: tensor([ 0.1705, -0.1442, -0.3651,  0.6114], device='cuda:0',
+       grad_fn=<SelectBackward0>)
+--
+[DEBUG POST-OUTPUT_LAYER_2]
+  logits[0]: tensor([ 0.1152, -0.3390, -0.3732,  0.7059], device='cuda:0',
+       grad_fn=<SelectBackward0>)
+--
+[DEBUG POST-OUTPUT_LAYER_2]
+
+════════════════════════════════════════════════════════
+ANÁLISIS
+════════════════════════════════════════════════════════
+
+✓ Logits deberían variar significativamente entre ejemplos
+  (diferencia > 0.5 después de 5 epochs)
+
+✓ Modelo debería hacer predicciones en múltiples clases
+  (no solo clase 0)
+
+✓ F1 scores debería mejorar para clases 1, 2, 3
+  (no solo F1=0 como antes)
+
+✓ Accuracy debería superar baseline 41.6%
+  (o estar cerca si clase 0 es muy fuerte)
+
+════════════════════════════════════════════════════════
+ARCHIVOS GENERADOS
+════════════════════════════════════════════════════════
+  Full log:  ./resultados/paso5_v6_training_20251227_005436.log
+  Debug:     ./resultados/paso5_v6_debug_20251227_005436.log
+  CSV loss:  ./resultados/paso5_v6_loss_20251227_005436.csv
+
+════════════════════════════════════════════════════════
+PRÓXIMOS PASOS
+════════════════════════════════════════════════════════
+
+1. Revisar LOSS CSV para ver convergencia:
+   head -20 ./resultados/paso5_v6_loss_20251227_005436.csv
+
+2. Revisar logits finales:
+   tail -50 ./resultados/paso5_v6_debug_20251227_005436.log
+
+3. Si F1 > 0.45 para cualquier clase:
+   ✓ El modelo está aprendiendo
+   ✓ Pasar a PASO 6 (ablation studies)
+
+4. Si F1 aún bajo:
+   ✗ Necesita investigación adicional
+   → Revisar knowledge graph injection
+   → Revisar visible_matrix application
+
