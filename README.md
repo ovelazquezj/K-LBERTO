@@ -1,10 +1,10 @@
 # K-LBERTO
 
-**Version:** 1.0.0  
-**License:** MIT  
-**Author:** Omar Francisco Velázquez Juárez  
-**Email:** omar.velazquez@edu.uah.es  
-**Affiliation:** Universidad de Alcalá de Henares, PhD Program in Information and Knowledge Engineering  
+**Version:** 1.0.0
+**License:** MIT
+**Author:** Omar Francisco Velázquez Juárez
+**Email:** omar.velazquez@edu.uah.es
+**Affiliation:** Universidad de Alcalá de Henares, PhD Program in Information and Knowledge Engineering
 **Research Directors:** Dr. García Cabot Antonio, Dra. García López Eva  
 ---
 
