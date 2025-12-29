@@ -6,8 +6,6 @@
 **Email:** omar.velazquez@edu.uah.es  
 **Affiliation:** Universidad de Alcalá de Henares, PhD Program in Information and Knowledge Engineering  
 **Research Directors:** Dr. García Cabot Antonio, Dra. García López Eva  
-**Status:** Production Ready
-
 ---
 
 ## Overview
@@ -47,14 +45,7 @@ Stable convergence achieved in 10 epochs
 - Data augmentation through paraphrasing and synonym replacement
 - Class distribution: 42.4%, 31.3%, 12.4%, 13.9% (balanced)
 
-### 3. Edge Device Optimization
-
-- Model size: approximately 632KB (Jetson Orin NX)
-- Inference latency: less than 100ms
-- Compatible with devices having less than 4GB RAM
-- Supports INT8 quantization and structured pruning
-
-### 4. Methodological Discovery
+### 3. Methodological Discovery
 
 Data quality and hyperparameter scaling are interdependent factors. The research validates that proportional scaling of learning rate and dropout is required when dataset size increases significantly. Formula: LR_new = LR_old / sqrt(dataset_ratio)
 
