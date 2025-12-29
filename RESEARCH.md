@@ -6,7 +6,6 @@
 **Research Directors:** Dr. García Cabot Antonio, Dra. García López Eva
 **Date:** December 28, 2025
 **Duration:** 12 hours (research, debugging, iteration, validation)
-**Status:** Completed - Validated and documented
 **Application:** Empirical evidence for "Curation Over Scale: Why Data Quality Requires Proportional Hyperparameter Scaling in Edge Spanish NLP"
 
 ---
@@ -117,7 +116,7 @@ The problem does NOT originate in code (validated later with 5 minor fixes). The
 
 # Code Analysis
 
-## Findings: 5 Issues Identified
+## Findings: 4 Issues Identified
 
 ### Finding 1: Redundant view() Operation (LOW IMPACT)
 - Line: 140, method forward()
@@ -144,11 +143,6 @@ The problem does NOT originate in code (validated later with 5 minor fixes). The
 - Fix: Add comparison against all classes
 - Classification: Early detection, improved debugging
 
-### Finding 5: Insufficient Epochs (MEDIUM IMPACT)
-- Configuration: 5 epochs
-- Problem: Logits without amplitude need more epochs to grow
-- Fix: Increase to 10 epochs
-- Classification: Convergence time in small dataset
 
 ## Code Analysis Conclusion
 
@@ -289,7 +283,7 @@ intensidad > sentiment strength
 ```
 Learning rate: 5e-05 [SAME as v6]
 Dropout: 0.5 [SAME as v6]
-Epochs: 10 [Increased]
+<!-- Epochs: 10 [Increased] -->
 ```
 
 ## v7 Result - DIVERGENCE
@@ -529,12 +523,6 @@ Where:
 - Proportional Scaling = adjusts LR, dropout by dataset size
 - Scale = increases quantity
 
-Article Title:
-"Curation Over Scale: Why Data Quality Requires 
-Proportional Hyperparameter Scaling in Edge Spanish NLP"
-
-This synthesis summarizes the scientific discoveries 
-that ground the article title and main hypothesis.
 ```
 
 ## Contribution to Literature

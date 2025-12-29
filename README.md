@@ -412,7 +412,6 @@ For technical inquiries, suggestions, or bug reports:
 
 - Email: omar.velazquez@edu.uah.es
 - GitHub Issues: https://github.com/ovelazquezj/K-LBERTO/issues
-- GitHub Discussions: https://github.com/ovelazquezj/K-LBERTO/discussions
 
 ---
 
