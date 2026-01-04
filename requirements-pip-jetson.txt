@@ -1,0 +1,5 @@
+# Jetson-only pip requirements
+jetson-stats==4.3.2
+
+# PyTorch on Jetson is tied to JetPack/NVIDIA wheels.
+# Install torch/torchvision/torchaudio using NVIDIA's Jetson instructions for your JetPack version.

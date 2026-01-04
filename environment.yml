@@ -1,0 +1,17 @@
+name: geo_kbert_jetson
+channels:
+  - defaults
+dependencies:
+  - python=3.8
+  - matplotlib
+  - scikit-learn
+  - psutil
+  - seaborn
+  - numpy
+  - click
+  - tqdm
+  - pip
+  - pip:
+      - -r requirements-pip.txt 
+prefix: /home/omar/miniconda3/envs/geo_kbert_jetson
+

@@ -1,0 +1,17 @@
+name: geo_kbert
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - matplotlib
+  - scikit-learn
+  - psutil
+  - seaborn
+  - numpy
+  - click
+  - tqdm
+  - pip
+  - pip:
+      - -r requirements-pip-common.txt
+      - -r requirements-pip-jetson.txt
