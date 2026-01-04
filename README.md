@@ -1,13 +1,11 @@
-# K-LBERTO: K-BERT Knowledge-Enhanced Spanish Language Model for Edge Devices
+# K-LBERTO
 
-**Version:** 1.0.0  
-**License:** MIT  
-**Author:** Omar Francisco Velázquez Juárez  
-**Email:** omar.velazquez@edu.uah.es  
-**Affiliation:** Universidad de Alcalá de Henares, PhD Program in Information and Knowledge Engineering  
-**Research Directors:** Dr. García Cabot Antonio, Dra. García López Eva  
-**Status:** Production Ready
-
+Version: 1.0.0
+License: MIT
+Author: Omar Francisco Velázquez Juárez
+Email: omar.velazquez@edu.uah.es
+Affiliation: Universidad de Alcalá de Henares, PhD Program in Information and Knowledge Engineering
+Research Directors: Dr. García Cabot Antonio, Dra. García López Eva  
 ---
 
 ## Overview
@@ -47,59 +45,9 @@ Stable convergence achieved in 10 epochs
 - Data augmentation through paraphrasing and synonym replacement
 - Class distribution: 42.4%, 31.3%, 12.4%, 13.9% (balanced)
 
-### 3. Edge Device Optimization
-
-- Model size: approximately 632KB (Jetson Orin NX)
-- Inference latency: less than 100ms
-- Compatible with devices having less than 4GB RAM
-- Supports INT8 quantization and structured pruning
-
-### 4. Methodological Discovery
+### 3. Methodological Discovery
 
 Data quality and hyperparameter scaling are interdependent factors. The research validates that proportional scaling of learning rate and dropout is required when dataset size increases significantly. Formula: LR_new = LR_old / sqrt(dataset_ratio)
-
----
-
-## Project Structure
-
-```
-K-LBERTO/
-├── README.md                          (this file)
-├── LICENSE                            (MIT License)
-├── requirements.txt                   (Python dependencies)
-│
-├── models/
-│   └── beto_uer_model/
-│       ├── pytorch_model.bin          (BETO pre-trained model)
-│       ├── vocab.txt                  (Spanish vocabulary)
-│       └── config.json                (model configuration)
-│
-├── datasets/
-│   └── tass_spanish/
-│       ├── train.tsv                  (1,522 training samples)
-│       └── test.tsv                   (654 validation samples)
-│
-├── brain/
-│   └── kgs/
-│       ├── TASS_sentiment_KG_FINAL.spo    (curated knowledge graph)
-│       └── KG_GENERATION_LOGS.md          (KG generation process)
-│
-├── src/
-│   ├── run_kbert_cls.py               (main training script)
-│   ├── utils.py                       (utility functions)
-│   └── models.py                      (K-BERT architecture)
-│
-├── outputs/
-│   ├── kbert_tass_v8_adjusted.bin     (final trained model)
-│   ├── PASO_5_v8_METRICS_CAPTURE.sh   (v8 execution script)
-│   └── resultados/
-│       ├── paso5_v8_training_*.log    (training logs)
-│       ├── paso5_v8_metrics_*.txt     (final metrics)
-│       └── paso5_v8_loss_*.csv        (loss progression)
-│
-└── docs/
-    └── RESEARCH.md                    (complete research methodology)
-```
 
 ---
 
@@ -464,7 +412,6 @@ For technical inquiries, suggestions, or bug reports:
 
 - Email: omar.velazquez@edu.uah.es
 - GitHub Issues: https://github.com/ovelazquezj/K-LBERTO/issues
-- GitHub Discussions: https://github.com/ovelazquezj/K-LBERTO/discussions
 
 ---
 
