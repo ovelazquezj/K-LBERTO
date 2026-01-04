@@ -1,0 +1,133 @@
+{
+  "full_dataset": {
+    "total_entities": 17799,
+    "entity_distribution": {
+      "LOC": 6159,
+      "PER": 6726,
+      "ORG": 4914
+    },
+    "entity_density": 0.5019559251218613,
+    "avg_sentence_length": 6.943401592718999,
+    "std_sentence_length": 4.04007009328208,
+    "avg_entities_per_sentence": 1.2655716723549488,
+    "PER_pct": 37.78863981122535,
+    "LOC_pct": 34.60306758806674,
+    "ORG_pct": 27.608292600707905
+  },
+  "subsets": {
+    "500": {
+      "total_entities": 642,
+      "entity_distribution": {
+        "PER": 231,
+        "ORG": 170,
+        "LOC": 241
+      },
+      "entity_density": 0.5127379209370425,
+      "avg_sentence_length": 6.83,
+      "std_sentence_length": 3.799618401892485,
+      "avg_entities_per_sentence": 1.284,
+      "PER_pct": 35.981308411214954,
+      "LOC_pct": 37.53894080996885,
+      "ORG_pct": 26.479750778816197
+    },
+    "750": {
+      "total_entities": 939,
+      "entity_distribution": {
+        "PER": 332,
+        "ORG": 261,
+        "LOC": 346
+      },
+      "entity_density": 0.5141453831041257,
+      "avg_sentence_length": 6.786666666666667,
+      "std_sentence_length": 3.6867088605180394,
+      "avg_entities_per_sentence": 1.252,
+      "PER_pct": 35.356762513312034,
+      "LOC_pct": 36.84771033013845,
+      "ORG_pct": 27.79552715654952
+    },
+    "1000": {
+      "total_entities": 1212,
+      "entity_distribution": {
+        "PER": 448,
+        "ORG": 342,
+        "LOC": 422
+      },
+      "entity_density": 0.5038759689922481,
+      "avg_sentence_length": 6.708,
+      "std_sentence_length": 3.467670111184165,
+      "avg_entities_per_sentence": 1.212,
+      "PER_pct": 36.96369636963696,
+      "LOC_pct": 34.81848184818482,
+      "ORG_pct": 28.217821782178216
+    },
+    "1500": {
+      "total_entities": 1857,
+      "entity_distribution": {
+        "PER": 706,
+        "ORG": 524,
+        "LOC": 627
+      },
+      "entity_density": 0.5145611768213896,
+      "avg_sentence_length": 6.707333333333334,
+      "std_sentence_length": 3.8145789923514344,
+      "avg_entities_per_sentence": 1.238,
+      "PER_pct": 38.01830910070005,
+      "LOC_pct": 33.764135702746366,
+      "ORG_pct": 28.21755519655358
+    },
+    "2000": {
+      "total_entities": 2529,
+      "entity_distribution": {
+        "PER": 948,
+        "ORG": 682,
+        "LOC": 899
+      },
+      "entity_density": 0.5043390222736477,
+      "avg_sentence_length": 6.914,
+      "std_sentence_length": 4.175715986510577,
+      "avg_entities_per_sentence": 1.2645,
+      "PER_pct": 37.48517200474496,
+      "LOC_pct": 35.54764729141953,
+      "ORG_pct": 26.96718070383551
+    },
+    "2500": {
+      "total_entities": 3162,
+      "entity_distribution": {
+        "PER": 1191,
+        "ORG": 868,
+        "LOC": 1103
+      },
+      "entity_density": 0.5051684088269454,
+      "avg_sentence_length": 6.888,
+      "std_sentence_length": 4.049920493046746,
+      "avg_entities_per_sentence": 1.2648,
+      "PER_pct": 37.66603415559772,
+      "LOC_pct": 34.882985452245414,
+      "ORG_pct": 27.450980392156865
+    },
+    "3000": {
+      "total_entities": 3786,
+      "entity_distribution": {
+        "PER": 1429,
+        "ORG": 1049,
+        "LOC": 1308
+      },
+      "entity_density": 0.504802095459837,
+      "avg_sentence_length": 6.872,
+      "std_sentence_length": 3.9418628421936077,
+      "avg_entities_per_sentence": 1.262,
+      "PER_pct": 37.74432118330692,
+      "LOC_pct": 34.54833597464342,
+      "ORG_pct": 27.70734284204966
+    }
+  },
+  "subset_sizes": [
+    500,
+    750,
+    1000,
+    1500,
+    2000,
+    2500,
+    3000
+  ]
+}

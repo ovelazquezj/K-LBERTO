@@ -1,0 +1,90 @@
+{
+  "builder_name": "parquet",
+  "citation": "",
+  "config_name": "es",
+  "dataset_name": "wikiann",
+  "dataset_size": 7968091,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/wikiann@f0a3be6dc5564c0cc4150bb660144800a1f539d4/es/validation-00000-of-00001.parquet": {
+      "num_bytes": 607704,
+      "checksum": null
+    },
+    "hf://datasets/wikiann@f0a3be6dc5564c0cc4150bb660144800a1f539d4/es/test-00000-of-00001.parquet": {
+      "num_bytes": 607815,
+      "checksum": null
+    },
+    "hf://datasets/wikiann@f0a3be6dc5564c0cc4150bb660144800a1f539d4/es/train-00000-of-00001.parquet": {
+      "num_bytes": 1216439,
+      "checksum": null
+    }
+  },
+  "download_size": 2431958,
+  "features": {
+    "tokens": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "ner_tags": {
+      "feature": {
+        "names": [
+          "O",
+          "B-PER",
+          "I-PER",
+          "B-ORG",
+          "I-ORG",
+          "B-LOC",
+          "I-LOC"
+        ],
+        "_type": "ClassLabel"
+      },
+      "_type": "List"
+    },
+    "langs": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    },
+    "spans": {
+      "feature": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "_type": "List"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 10400049,
+  "splits": {
+    "validation": {
+      "name": "validation",
+      "num_bytes": 1984952,
+      "num_examples": 10000,
+      "dataset_name": "wikiann"
+    },
+    "test": {
+      "name": "test",
+      "num_bytes": 1994732,
+      "num_examples": 10000,
+      "dataset_name": "wikiann"
+    },
+    "train": {
+      "name": "train",
+      "num_bytes": 3988407,
+      "num_examples": 20000,
+      "dataset_name": "wikiann"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

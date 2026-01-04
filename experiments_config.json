@@ -1,0 +1,45 @@
+{
+  "base_config": {
+    "pretrained_model_path": "models/beto_model/pytorch_model.bin",
+    "vocab_path": "models/beto_model/vocab.txt",
+    "config_path": "models/beto_model/config_uer.json",
+    "dev_path": "data/wikiann_tsv/dev.tsv",
+    "test_path": "data/wikiann_tsv/test.tsv",
+    "kg_name": "brain/kgs/wikidata_ner_spanish.spo",
+    "output_dir": "resultados",
+    "epochs_num": 10,
+    "batch_size": 4,
+    "seq_length": 128,
+    "report_steps": 25
+  },
+  
+  "research_questions": {
+    "RQ1": {
+      "description": "Learning Rate Scaling Validation",
+      "base_lr": 2e-5,
+      "scaling_formula": "lr_new = lr_base / sqrt(N_new / N_base)",
+      "datasets": [500, 750, 1000, 1500, 2000, 2500, 3000],
+      "seeds": [42, 43, 44],
+      "configs": [
+        {"name": "base", "lr_multiplier": 1.0},
+        {"name": "sqrt", "lr_formula": "sqrt_scaled"}
+      ]
+    },
+    
+    "RQ2": {
+      "description": "KG Size Impact",
+      "note": "Pendiente - requiere KGs de diferentes tamaños"
+    },
+    
+    "RQ3": {
+      "description": "Architecture Ablation",
+      "note": "Pendiente - requiere modificaciones arquitectónicas"
+    }
+  },
+  
+  "hardware_limits": {
+    "max_parallel": 1,
+    "gpu_memory_limit": 7000,
+    "timeout_minutes": 120
+  }
+}

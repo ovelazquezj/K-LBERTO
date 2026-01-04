@@ -1,0 +1,11 @@
+{
+  "train_path": "data/wikiann_tsv/train_500.tsv",
+  "batch_size": 4,
+  "learning_rate": 2e-05,
+  "epochs_num": 2,
+  "seq_length": 128,
+  "seed": 42,
+  "kg_name": "data/knowledge_graph/knowledge_graph.txt",
+  "experiment_name": "test_logger_D500",
+  "logged_at": "2026-01-03T16:26:04.181776"
+}

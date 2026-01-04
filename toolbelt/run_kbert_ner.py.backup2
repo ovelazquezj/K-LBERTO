@@ -1,16 +1,7 @@
-# -*- encoding:utf-8 -*-
+# -*- encoding:utf -*-
 """
   This script provides an K-BERT example for NER.
-  
-  FIXES APLICADOS (2026-01-03):
-  - Bug 1: Eliminado import innecesario de calculate_ner_metrics
-  - Bug 2: Eliminada inicialización innecesaria tokens, labels = [], []
-  - Bug 3-4: Eliminados acumuladores all_preds/all_golds problemáticos
-  - Bug 5: Eliminada concatenación errónea y llamada a calculate_ner_metrics
-  - Bug 6: Agregado epoch en evaluate() durante training
-  - Logging funcional con métricas overall (PER/LOC/ORG pendientes)
 """
-import os
 import random
 import argparse
 import torch
@@ -26,7 +17,6 @@ from uer.model_saver import save_model
 import numpy as np
 
 from brain import KnowledgeGraph
-from utils.metrics_logger import MetricsLogger
 
 
 class BertTagger(nn.Module):
@@ -77,7 +67,7 @@ class BertTagger(nn.Module):
         correct = torch.sum(
             label_mask * (predict.eq(label)).float()
         )
-
+        
         return loss, correct, predict, label
 
 
@@ -110,7 +100,7 @@ def main():
                                                    "rcnn", "crnn", "gpt", "bilstm"], \
                                                    default="bert", help="Encoder type.")
     parser.add_argument("--bidirectional", action="store_true", help="Specific to recurrent model.")
-
+    
     # Subword options.
     parser.add_argument("--subword_type", choices=["none", "char"], default="none",
                         help="Subword feature type.")
@@ -139,42 +129,12 @@ def main():
     # kg
     parser.add_argument("--kg_name", required=True, help="KG name or path")
 
-    # Logging options
-    parser.add_argument("--experiment_name", type=str, default=None,
-                        help="Experiment name for logging (e.g., D500_sqrt_seed42)")
-    parser.add_argument("--output_dir", type=str, default="resultados",
-                        help="Output directory for logs and results")
-
-
     args = parser.parse_args()
 
     # Load the hyperparameters of the config file.
     args = load_hyperparam(args)
 
     set_seed(args.seed)
-
-    # Initialize metrics logger
-    if hasattr(args, 'experiment_name') and args.experiment_name:
-        logger = MetricsLogger(
-            output_dir=args.output_dir if hasattr(args, 'output_dir') else 'resultados',
-            experiment_name=args.experiment_name
-        )
-        # Save experiment config
-        config_dict = {
-            'train_path': args.train_path,
-            'batch_size': args.batch_size,
-            'learning_rate': args.learning_rate,
-            'epochs_num': args.epochs_num,
-            'seq_length': args.seq_length,
-            'seed': args.seed,
-            'kg_name': args.kg_name
-        }
-        logger.save_config(config_dict)
-        print(f"[Logger] Initialized: {logger.experiment_name}")
-    else:
-        logger = None
-        print("[Logger] No experiment_name provided - logging disabled")
-
 
     labels_map = {"[PAD]": 0, "[ENT]": 1}
     begin_ids = []
@@ -184,13 +144,13 @@ def main():
         for line_id, line in enumerate(f):
             if line_id == 0:
                 continue
-            labels = line.strip().split("\t")[0].split()
+            labels = line.strip().split("\t")[1].split()
             for l in labels:
                 if l not in labels_map:
                     if l.startswith("B") or l.startswith("S"):
                         begin_ids.append(len(labels_map))
                     labels_map[l] = len(labels_map)
-
+    
     print("Labels: ", labels_map)
     args.labels_num = len(labels_map)
 
@@ -214,13 +174,13 @@ def main():
     # Load or initialize parameters.
     if args.pretrained_model_path is not None:
         # Initialize with pretrained model.
-        model.load_state_dict(torch.load(args.pretrained_model_path), strict=False)
+        model.load_state_dict(torch.load(args.pretrained_model_path), strict=False)  
     else:
         # Initialize with normal distribution.
         for n, p in list(model.named_parameters()):
             if 'gamma' not in n and 'beta' not in n:
                 p.data.normal_(0, 0.02)
-
+    
     # Build sequence labeling model.
     model = BertTagger(args, model)
 
@@ -257,8 +217,9 @@ def main():
         dataset = []
         with open(path, mode="r", encoding="utf-8") as f:
             f.readline()
+            tokens, labels = [], []
             for line_id, line in enumerate(f):
-                labels, tokens = line.strip().split("\t")
+                tokens, labels = line.strip().split("\t")
 
                 text = tokens
                 tokens, pos, vm, tag = kg.add_knowledge_with_vm([text], add_pad=True, max_length=args.seq_length)
@@ -274,20 +235,20 @@ def main():
                 new_labels = []
                 j = 0
                 for i in range(len(tokens)):
-                    if tag[i] == 0 and tokens[i] != vocab.get("[PAD]"):
+                    if tag[i] == 0 and tokens[i] != PAD_ID:
                         new_labels.append(labels[j])
                         j += 1
-                    elif tag[i] == 1 and tokens[i] != vocab.get("[PAD]"):
+                    elif tag[i] == 1 and tokens[i] != PAD_ID:  # 是添加的实体
                         new_labels.append(labels_map['[ENT]'])
                     else:
                         new_labels.append(labels_map[PAD_TOKEN])
 
                 dataset.append([tokens, new_labels, mask, pos, vm, tag])
-
+        
         return dataset
 
     # Evaluation function.
-    def evaluate(args, is_test, epoch=0):
+    def evaluate(args, is_test):
         if is_test:
             dataset = read_dataset(args.test_path)
         else:
@@ -306,21 +267,10 @@ def main():
         if is_test:
             print("Batch size: ", batch_size)
             print("The number of test instances:", instances_num)
-
-        # Overall counters
+ 
         correct = 0
         gold_entities_num = 0
         pred_entities_num = 0
-
-        # Counters por tipo de entidad
-        stats_per_type = {
-            'PER': {'tp': 0, 'fp': 0, 'fn': 0},
-            'LOC': {'tp': 0, 'fp': 0, 'fn': 0},
-            'ORG': {'tp': 0, 'fp': 0, 'fn': 0}
-        }
-
-        # Crear mapa inverso de labels
-        id2label = {v: k for k, v in labels_map.items()}
 
         confusion = torch.zeros(len(labels_map), len(labels_map), dtype=torch.long)
 
@@ -336,12 +286,11 @@ def main():
             vm_ids_batch = vm_ids_batch.long().to(device)
 
             loss, _, pred, gold = model(input_ids_batch, label_ids_batch, mask_ids_batch, pos_ids_batch, vm_ids_batch)
-
-            # Procesar batch como antes para métricas overall
+            
             for j in range(gold.size()[0]):
                 if gold[j].item() in begin_ids:
                     gold_entities_num += 1
-
+ 
             for j in range(pred.size()[0]):
                 if pred[j].item() in begin_ids and gold[j].item() != labels_map["[PAD]"]:
                     pred_entities_num += 1
@@ -350,116 +299,49 @@ def main():
             gold_entities_pos = []
             start, end = 0, 0
 
-            # Extraer entidades gold con tipo
-            gold_entities_typed = []
             for j in range(gold.size()[0]):
                 if gold[j].item() in begin_ids:
                     start = j
-                    label_name = id2label.get(gold[j].item(), 'O')
-                    entity_type = label_name.split('-')[1] if '-' in label_name else 'UNK'
-                    
                     for k in range(j+1, gold.size()[0]):
+                        
                         if gold[k].item() == labels_map['[ENT]']:
                             continue
+
                         if gold[k].item() == labels_map["[PAD]"] or gold[k].item() == labels_map["O"] or gold[k].item() in begin_ids:
                             end = k - 1
                             break
                     else:
                         end = gold.size()[0] - 1
-                    
                     gold_entities_pos.append((start, end))
-                    gold_entities_typed.append({'start': start, 'end': end, 'type': entity_type})
-
-            # Extraer entidades pred con tipo
-            pred_entities_typed = []
+            
             for j in range(pred.size()[0]):
                 if pred[j].item() in begin_ids and gold[j].item() != labels_map["[PAD]"] and gold[j].item() != labels_map["[ENT]"]:
                     start = j
-                    label_name = id2label.get(pred[j].item(), 'O')
-                    entity_type = label_name.split('-')[1] if '-' in label_name else 'UNK'
-                    
                     for k in range(j+1, pred.size()[0]):
+
                         if gold[k].item() == labels_map['[ENT]']:
                             continue
+
                         if pred[k].item() == labels_map["[PAD]"] or pred[k].item() == labels_map["O"] or pred[k].item() in begin_ids:
                             end = k - 1
                             break
                     else:
                         end = pred.size()[0] - 1
-                    
                     pred_entities_pos.append((start, end))
-                    pred_entities_typed.append({'start': start, 'end': end, 'type': entity_type})
 
-            # Calcular correct para overall
             for entity in pred_entities_pos:
                 if entity not in gold_entities_pos:
                     continue
-                else:
+                else: 
                     correct += 1
 
-            # Calcular TP/FP/FN por tipo
-            for ent_type in ['PER', 'LOC', 'ORG']:
-                # Entidades de este tipo
-                pred_type = [e for e in pred_entities_typed if e['type'] == ent_type]
-                gold_type = [e for e in gold_entities_typed if e['type'] == ent_type]
-                
-                # Convertir a spans para comparación
-                pred_spans = set((e['start'], e['end']) for e in pred_type)
-                gold_spans = set((e['start'], e['end']) for e in gold_type)
-                
-                # TP: spans que están en ambos
-                tp = len(pred_spans & gold_spans)
-                # FP: spans predichos que no están en gold
-                fp = len(pred_spans - gold_spans)
-                # FN: spans gold que no fueron predichos
-                fn = len(gold_spans - pred_spans)
-                
-                stats_per_type[ent_type]['tp'] += tp
-                stats_per_type[ent_type]['fp'] += fp
-                stats_per_type[ent_type]['fn'] += fn
-
-        # Calcular métricas overall
         print("Report precision, recall, and f1:")
-        p = correct/pred_entities_num if pred_entities_num > 0 else 0.0
-        r = correct/gold_entities_num if gold_entities_num > 0 else 0.0
-        f1 = 2*p*r/(p+r) if (p+r) > 0 else 0.0
+        p = correct/pred_entities_num
+        r = correct/gold_entities_num
+        f1 = 2*p*r/(p+r)
         print("{:.3f}, {:.3f}, {:.3f}".format(p,r,f1))
 
-        # Calcular métricas por tipo
-        metrics_by_type = {}
-        for ent_type in ['PER', 'LOC', 'ORG']:
-            tp = stats_per_type[ent_type]['tp']
-            fp = stats_per_type[ent_type]['fp']
-            fn = stats_per_type[ent_type]['fn']
-            
-            p_type = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-            r_type = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-            f1_type = 2 * p_type * r_type / (p_type + r_type) if (p_type + r_type) > 0 else 0.0
-            
-            metrics_by_type[ent_type] = {
-                'precision': p_type,
-                'recall': r_type,
-                'f1': f1_type
-            }
-            
-            print(f"  {ent_type}: P={p_type:.3f}, R={r_type:.3f}, F1={f1_type:.3f}")
-
-        # Construir dict completo de métricas
-        metrics = {
-            'overall': {'precision': p, 'recall': r, 'f1': f1},
-            'PER': metrics_by_type['PER'],
-            'LOC': metrics_by_type['LOC'],
-            'ORG': metrics_by_type['ORG'],
-            'counts': {'correct': correct, 'pred_entities': pred_entities_num, 'gold_entities': gold_entities_num}
-        }
-
-        # Log metrics if logger available
-        if logger and not is_test:
-            logger.log_metrics(epoch=epoch, split='dev', metrics=metrics)
-        elif logger and is_test:
-            logger.log_metrics(epoch=epoch, split='test', metrics=metrics)
-
-        return metrics['overall']['f1'], metrics
+        return f1
 
     # Training phase.
     print("Start training.")
@@ -509,8 +391,6 @@ def main():
             total_loss += loss.item()
             if (i + 1) % args.report_steps == 0:
                 print("Epoch id: {}, Training steps: {}, Avg loss: {:.3f}".format(epoch, i+1, total_loss / args.report_steps))
-                if logger:
-                    logger.log_loss(epoch, i+1, total_loss / args.report_steps)
                 total_loss = 0.
 
             loss.backward()
@@ -518,11 +398,11 @@ def main():
 
         # Evaluation phase.
         print("Start evaluate on dev dataset.")
-        f1, dev_metrics = evaluate(args, False, epoch)
+        f1 = evaluate(args, False)
         print("Start evaluation on test dataset.")
-        evaluate(args, True, epoch)
+        evaluate(args, True)
 
-        if f1 >= best_f1:
+        if f1 > best_f1:
             best_f1 = f1
             save_model(model, args.output_model_path)
         else:
@@ -534,12 +414,9 @@ def main():
     if torch.cuda.device_count() > 1:
         model.module.load_state_dict(torch.load(args.output_model_path))
     else:
-        if os.path.exists(args.output_model_path):
-            model.load_state_dict(torch.load(args.output_model_path))
-            print("Loaded best model from {}".format(args.output_model_path))
-        else:
-            print("Warning: No saved model found at {}. Using current model.".format(args.output_model_path))
-    evaluate(args, True, args.epochs_num)
+        model.load_state_dict(torch.load(args.output_model_path))
+
+    evaluate(args, True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+{
+  "samples_iniciales": 20000,
+  "samples_curados": 14064,
+  "samples_removidos_total": 5936,
+  "tasa_retencion": 0.7032,
+  "removidos_por_criterio": {
+    "criterio_1_menos_3_tokens": 0,
+    "criterio_2_sin_entities": 0,
+    "criterio_3_bio_inconsistente": 0,
+    "criterio_4_duplicados": 2181,
+    "criterio_5_mas_90pct_entities": 3755
+  },
+  "entity_distribution": {
+    "LOC": 6159,
+    "PER": 6726,
+    "ORG": 4914
+  },
+  "entity_density": 0.5019559251218613
+}

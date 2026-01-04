@@ -1,0 +1,10 @@
+{
+  "dataset_size": 500,
+  "learning_rate": 2e-05,
+  "lr_strategy": "sqrt",
+  "batch_size": 4,
+  "epochs": 3,
+  "seed": 42,
+  "experiment_name": "test_D500_sqrt_seed42",
+  "logged_at": "2026-01-03T16:05:40.945575"
+}

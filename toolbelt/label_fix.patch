@@ -1,0 +1,17 @@
+                tokens = [vocab.get(t) for t in tokens]
+                labels = [labels_map[l] for l in labels.split(" ")]
+                mask = [1] * len(tokens)
+
+                new_labels = []
+                j = 0
+                for i in range(len(tokens)):
+                    if tokens[i] == PAD_ID:  # Padding token
+                        new_labels.append(labels_map[PAD_TOKEN])
+                    elif tag[i] == 1:  # Knowledge token
+                        new_labels.append(labels_map['[ENT]'])
+                    else:  # Original token (tag==0 and not padding)
+                        if j < len(labels):
+                            new_labels.append(labels[j])
+                            j += 1
+                        else:
+                            new_labels.append(labels_map[PAD_TOKEN])
