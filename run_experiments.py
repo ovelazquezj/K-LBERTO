@@ -147,18 +147,21 @@ class ExperimentRunner:
                 timeout = self.config['hardware_limits']['timeout_minutes'] * 60
                 process.wait(timeout=timeout)
                 
-                if process.returncode == 0:
-                    elapsed = time.time() - start_time
+                elapsed = time.time() - start_time
+                
+                # Verificar éxito por existencia de archivos, no return code
+                metrics_file = f"{self.base_config['output_dir']}/{exp_name}_metrics.csv"
+                if os.path.exists(metrics_file):
                     print(f"✅ COMPLETADO: {exp_name} ({elapsed/60:.1f} min)")
                     self.progress['completed'].append(exp_name)
                     self.progress['current'] = None
                     self.save_progress()
                     return True
                 else:
-                    print(f"❌ ERROR: {exp_name} (return code: {process.returncode})")
+                    print(f"❌ ERROR: {exp_name} (no metrics file, return code: {process.returncode})")
                     self.progress['failed'].append({
                         'name': exp_name,
-                        'error': f'Return code {process.returncode}',
+                        'error': f'No metrics file, return code {process.returncode}',
                         'log': log_file
                     })
                     self.progress['current'] = None

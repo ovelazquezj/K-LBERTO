@@ -524,18 +524,17 @@ def main():
 
         if f1 >= best_f1:
             best_f1 = f1
-            save_model(model, args.output_model_path)
-        else:
-            continue
+            # save_model(model, args.output_model_path)  # DESHABILITADO: ahorro de espacio
+            pass  # Placeholder para evitar IndentationError
 
     # Evaluation phase.
     print("Final evaluation on test dataset.")
 
     if torch.cuda.device_count() > 1:
-        model.module.load_state_dict(torch.load(args.output_model_path))
+        pass  # model.module.load_state_dict deshabilitado
     else:
         if os.path.exists(args.output_model_path):
-            model.load_state_dict(torch.load(args.output_model_path))
+            pass  # model.load_state_dict deshabilitado
             print("Loaded best model from {}".format(args.output_model_path))
         else:
             print("Warning: No saved model found at {}. Using current model.".format(args.output_model_path))

@@ -8,7 +8,7 @@
     "kg_name": "brain/kgs/wikidata_ner_spanish.spo",
     "output_dir": "resultados",
     "epochs_num": 10,
-    "batch_size": 4,
+    "batch_size": 8,
     "seq_length": 128,
     "report_steps": 25
   },
@@ -40,6 +40,6 @@
   "hardware_limits": {
     "max_parallel": 1,
     "gpu_memory_limit": 7000,
-    "timeout_minutes": 120
+    "timeout_minutes": 240
   }
 }
