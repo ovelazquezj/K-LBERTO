@@ -1,0 +1,23 @@
+{
+  "completed": [
+    "ABL_CUR_NOKG_s42",
+    "ABL_CUR_NOKG_s123",
+    "ABL_CUR_NOKG_s456",
+    "ABL_CUR_GEN_s42",
+    "ABL_CUR_GEN_s123",
+    "ABL_CUR_GEN_s456",
+    "ABL_CUR_CUR_s42",
+    "ABL_CUR_CUR_s123",
+    "ABL_CUR_CUR_s456",
+    "ABL_RAW_NOKG_s42",
+    "ABL_RAW_NOKG_s123",
+    "ABL_RAW_NOKG_s456",
+    "ABL_RAW_GEN_s42",
+    "ABL_RAW_GEN_s123",
+    "ABL_RAW_GEN_s456",
+    "ABL_RAW_CUR_s42",
+    "ABL_RAW_CUR_s123",
+    "ABL_RAW_CUR_s456"
+  ],
+  "failed": []
+}

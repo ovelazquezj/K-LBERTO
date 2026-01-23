@@ -1,0 +1,51 @@
+{
+  "experiment_name": "ablation_kg_quality_d4000",
+  "description": "Factorial 2x3: Data curation × KG quality (D=4000, 5 seeds)",
+  "fixed_params": {
+    "learning_rate": 2e-5,
+    "batch_size": 8,
+    "epochs": 10,
+    "max_seq_length": 128,
+    "warmup_ratio": 0.1,
+    "dropout": 0.5,
+    "dev_file": "data/wikiann_tsv/dev.tsv",
+    "test_file": "data/wikiann_tsv/test.tsv"
+  },
+  "experiments": [
+    {"id": "ABL_CUR_NOKG_s42",   "train": "train_4000.tsv",     "kg": "empty.spo",                      "seed": 42},
+    {"id": "ABL_CUR_NOKG_s123",  "train": "train_4000.tsv",     "kg": "empty.spo",                      "seed": 123},
+    {"id": "ABL_CUR_NOKG_s456",  "train": "train_4000.tsv",     "kg": "empty.spo",                      "seed": 456},
+    {"id": "ABL_CUR_NOKG_s789",  "train": "train_4000.tsv",     "kg": "empty.spo",                      "seed": 789},
+    {"id": "ABL_CUR_NOKG_s2024", "train": "train_4000.tsv",     "kg": "empty.spo",                      "seed": 2024},
+    
+    {"id": "ABL_CUR_GEN_s42",    "train": "train_4000.tsv",     "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 42},
+    {"id": "ABL_CUR_GEN_s123",   "train": "train_4000.tsv",     "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 123},
+    {"id": "ABL_CUR_GEN_s456",   "train": "train_4000.tsv",     "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 456},
+    {"id": "ABL_CUR_GEN_s789",   "train": "train_4000.tsv",     "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 789},
+    {"id": "ABL_CUR_GEN_s2024",  "train": "train_4000.tsv",     "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 2024},
+    
+    {"id": "ABL_CUR_CUR_s42",    "train": "train_4000.tsv",     "kg": "wikidata_ner_spanish.spo",       "seed": 42},
+    {"id": "ABL_CUR_CUR_s123",   "train": "train_4000.tsv",     "kg": "wikidata_ner_spanish.spo",       "seed": 123},
+    {"id": "ABL_CUR_CUR_s456",   "train": "train_4000.tsv",     "kg": "wikidata_ner_spanish.spo",       "seed": 456},
+    {"id": "ABL_CUR_CUR_s789",   "train": "train_4000.tsv",     "kg": "wikidata_ner_spanish.spo",       "seed": 789},
+    {"id": "ABL_CUR_CUR_s2024",  "train": "train_4000.tsv",     "kg": "wikidata_ner_spanish.spo",       "seed": 2024},
+    
+    {"id": "ABL_RAW_NOKG_s42",   "train": "train_raw_4000.tsv", "kg": "empty.spo",                      "seed": 42},
+    {"id": "ABL_RAW_NOKG_s123",  "train": "train_raw_4000.tsv", "kg": "empty.spo",                      "seed": 123},
+    {"id": "ABL_RAW_NOKG_s456",  "train": "train_raw_4000.tsv", "kg": "empty.spo",                      "seed": 456},
+    {"id": "ABL_RAW_NOKG_s789",  "train": "train_raw_4000.tsv", "kg": "empty.spo",                      "seed": 789},
+    {"id": "ABL_RAW_NOKG_s2024", "train": "train_raw_4000.tsv", "kg": "empty.spo",                      "seed": 2024},
+    
+    {"id": "ABL_RAW_GEN_s42",    "train": "train_raw_4000.tsv", "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 42},
+    {"id": "ABL_RAW_GEN_s123",   "train": "train_raw_4000.tsv", "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 123},
+    {"id": "ABL_RAW_GEN_s456",   "train": "train_raw_4000.tsv", "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 456},
+    {"id": "ABL_RAW_GEN_s789",   "train": "train_raw_4000.tsv", "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 789},
+    {"id": "ABL_RAW_GEN_s2024",  "train": "train_raw_4000.tsv", "kg": "WikidataES_CLEAN_v251109.spo",   "seed": 2024},
+    
+    {"id": "ABL_RAW_CUR_s42",    "train": "train_raw_4000.tsv", "kg": "wikidata_ner_spanish.spo",       "seed": 42},
+    {"id": "ABL_RAW_CUR_s123",   "train": "train_raw_4000.tsv", "kg": "wikidata_ner_spanish.spo",       "seed": 123},
+    {"id": "ABL_RAW_CUR_s456",   "train": "train_raw_4000.tsv", "kg": "wikidata_ner_spanish.spo",       "seed": 456},
+    {"id": "ABL_RAW_CUR_s789",   "train": "train_raw_4000.tsv", "kg": "wikidata_ner_spanish.spo",       "seed": 789},
+    {"id": "ABL_RAW_CUR_s2024",  "train": "train_raw_4000.tsv", "kg": "wikidata_ner_spanish.spo",       "seed": 2024}
+  ]
+}
