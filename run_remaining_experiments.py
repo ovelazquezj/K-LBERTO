@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
 """
-Script para ejecutar experimentos restantes RQ1
-Usa experiments_remaining.json
+Script para ejecutar experimentos restantes
+Acepta --config y --progress como parámetros
 """
 
 import json
 import subprocess
 import sys
 import os
+import argparse
 from datetime import datetime
 
 class RemainingExperimentsRunner:
-    def __init__(self, config_file='experiments_remaining.json'):
+    def __init__(self, config_file, progress_file):
         with open(config_file, 'r') as f:
             self.config = json.load(f)
-        
+
         self.base_config = self.config['base_config']
         self.experiments = self.config['experiments']
         self.hardware_limits = self.config.get('hardware_limits', {})
-        
+
         # Progress tracking
-        self.progress_file = 'experiments_progress_remaining.json'
+        self.progress_file = progress_file
         self.load_progress()
-    
+
     def load_progress(self):
         if os.path.exists(self.progress_file):
             with open(self.progress_file, 'r') as f:
@@ -34,11 +35,11 @@ class RemainingExperimentsRunner:
                 'skipped': [],
                 'current': None
             }
-    
+
     def save_progress(self):
         with open(self.progress_file, 'w') as f:
             json.dump(self.progress, f, indent=2)
-    
+
     def run_experiment(self, exp):
         print("\n" + "="*80)
         print(f"🚀 INICIANDO: {exp['name']}")
@@ -47,14 +48,14 @@ class RemainingExperimentsRunner:
         print(f"   LR: {exp['learning_rate']:.2e}")
         print(f"   Seed: {exp['seed']}")
         print("="*80)
-        
+
         # Marcar como actual
         self.progress['current'] = {
             'name': exp['name'],
             'start_time': datetime.now().isoformat()
         }
         self.save_progress()
-        
+
         # Construir comando
         cmd = [
             'python', 'run_kbert_ner.py',
@@ -75,10 +76,10 @@ class RemainingExperimentsRunner:
             '--report_steps', str(self.base_config['report_steps']),
             '--seed', str(exp['seed'])
         ]
-        
+
         # Log
         log_file = f"logs/{exp['name']}.log"
-        
+
         # Ejecutar
         try:
             with open(log_file, 'w') as log:
@@ -88,7 +89,7 @@ class RemainingExperimentsRunner:
                     stderr=subprocess.STDOUT,
                     timeout=self.hardware_limits.get('timeout_minutes', 210) * 60
                 )
-            
+
             # Verificar éxito
             metrics_file = f"{self.base_config['output_dir']}/{exp['name']}_metrics.csv"
             if os.path.exists(metrics_file):
@@ -100,40 +101,41 @@ class RemainingExperimentsRunner:
                     'name': exp['name'],
                     'error': 'No metrics file'
                 })
-        
+
         except subprocess.TimeoutExpired:
             print(f"⏱️ TIMEOUT: {exp['name']}")
             self.progress['failed'].append({
                 'name': exp['name'],
                 'error': 'Timeout'
             })
-        
+
         except Exception as e:
             print(f"❌ ERROR: {exp['name']}: {str(e)}")
             self.progress['failed'].append({
                 'name': exp['name'],
                 'error': str(e)
             })
-        
+
         self.progress['current'] = None
         self.save_progress()
-    
+
     def run_all(self):
         print("\n" + "="*80)
-        print(f"EXPERIMENTOS RESTANTES RQ1: {len(self.experiments)} total")
+        print(f"EXPERIMENTOS: {len(self.experiments)} total")
+        print(f"Config: {self.progress_file}")
         print("="*80)
-        
+
         for i, exp in enumerate(self.experiments, 1):
             print(f"\n[{i}/{len(self.experiments)}] Experimento: {exp['name']}")
-            
+
             # Skip si ya completado
             if exp['name'] in self.progress['completed']:
                 print(f"⏭️  SKIP: {exp['name']} (ya completado)")
                 self.progress['skipped'].append(exp['name'])
                 continue
-            
+
             self.run_experiment(exp)
-        
+
         print("\n" + "="*80)
         print("EJECUCIÓN COMPLETADA")
         print("="*80)
@@ -142,5 +144,10 @@ class RemainingExperimentsRunner:
         print(f"⏭️  Saltados: {len(self.progress['skipped'])}")
 
 if __name__ == '__main__':
-    runner = RemainingExperimentsRunner()
+    parser = argparse.ArgumentParser(description='Ejecutar experimentos')
+    parser.add_argument('--config', required=True, help='Archivo de configuración JSON')
+    parser.add_argument('--progress', required=True, help='Archivo de progreso JSON')
+    args = parser.parse_args()
+    
+    runner = RemainingExperimentsRunner(args.config, args.progress)
     runner.run_all()
