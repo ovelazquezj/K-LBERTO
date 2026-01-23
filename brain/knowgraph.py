@@ -6,7 +6,6 @@ Modified: Word-level for Spanish/European languages
 """
 import os
 import brain.config as config
-import pkuseg
 import numpy as np
 
 
@@ -26,6 +25,7 @@ class KnowledgeGraph(object):
         # MODIFIED: Only load Chinese tokenizer if NOT word_level mode
         if not self.word_level:
             # Original: For Chinese character-level tokenization
+            import pkuseg  # It is imported just for Chinese character-level tokenization
             self.tokenizer = pkuseg.pkuseg(model_name="default", postag=False, user_dict=self.segment_vocab)
         else:
             # NEW: For Spanish word-level, we don't need pkuseg
