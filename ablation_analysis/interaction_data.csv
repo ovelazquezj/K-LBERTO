@@ -1,0 +1,7 @@
+data,data_label,kg,kg_label,f1_mean,f1_std,n
+CUR,Curated,CUR,Curated (15k),0.6156,0.0117,3
+CUR,Curated,GEN,Generic (3.4M),0.5645,0.0979,3
+CUR,Curated,NOKG,None,0.6244,0.0127,3
+RAW,Raw,CUR,Curated (15k),0.5423,0.1091,3
+RAW,Raw,GEN,Generic (3.4M),0.443,0.1364,3
+RAW,Raw,NOKG,None,0.5416,0.119,3

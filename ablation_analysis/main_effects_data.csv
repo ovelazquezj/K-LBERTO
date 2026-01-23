@@ -1,0 +1,6 @@
+factor_code,factor_label,f1_mean,f1_std,n,factor
+CUR,Curated,0.6015,0.0571,9,Data
+RAW,Raw,0.509,0.1167,9,Data
+CUR,Curated (15k),0.579,0.0801,6,KG
+GEN,Generic (3.4M),0.5038,0.1253,6,KG
+NOKG,None,0.583,0.0883,6,KG

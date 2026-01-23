@@ -1,4 +1,6 @@
+*.gz
 # Models and Triplets
+*.backup
 *~
 *.bin
 models/

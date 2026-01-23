@@ -1,0 +1,7 @@
+data,kg,data_label,kg_label,f1_mean,f1_std,f1_count,f1_min,f1_max,precision_mean,precision_std,recall_mean,recall_std
+CUR,CUR,Curated,Curated (15k),0.61,0.0053,5,0.606,0.6192,0.6221,0.0097,0.5983,0.0044
+CUR,GEN,Curated,Generic (3.4M),0.5832,0.0073,5,0.5766,0.5954,0.5971,0.0081,0.5699,0.0072
+CUR,NOKG,Curated,None,0.6099,0.0041,5,0.6047,0.6157,0.6141,0.004,0.6058,0.0065
+RAW,CUR,Raw,Curated (15k),0.652,0.0029,5,0.6481,0.6549,0.6806,0.0061,0.6258,0.0077
+RAW,GEN,Raw,Generic (3.4M),0.5867,0.1354,5,0.3458,0.6584,0.6099,0.1384,0.5652,0.1324
+RAW,NOKG,Raw,None,0.6565,0.006,5,0.6493,0.6652,0.6846,0.0121,0.6307,0.0032

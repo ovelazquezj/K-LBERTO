@@ -1,0 +1,11 @@
+{
+  "train_path": "data/wikiann_tsv/train_2000.tsv",
+  "batch_size": 8,
+  "learning_rate": 1e-05,
+  "epochs_num": 10,
+  "seq_length": 128,
+  "seed": 43,
+  "kg_name": "brain/kgs/wikidata_ner_spanish.spo",
+  "experiment_name": "RQ1_D2000_sqrt_seed43",
+  "logged_at": "2026-01-06T22:09:53.978093"
+}

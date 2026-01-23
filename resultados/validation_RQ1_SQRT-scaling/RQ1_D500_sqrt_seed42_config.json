@@ -1,0 +1,11 @@
+{
+  "train_path": "data/wikiann_tsv/train_500.tsv",
+  "batch_size": 8,
+  "learning_rate": 2e-05,
+  "epochs_num": 10,
+  "seq_length": 128,
+  "seed": 42,
+  "kg_name": "brain/kgs/wikidata_ner_spanish.spo",
+  "experiment_name": "RQ1_D500_sqrt_seed42",
+  "logged_at": "2026-01-04T15:35:08.441470"
+}

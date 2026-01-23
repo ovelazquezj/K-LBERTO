@@ -1,0 +1,326 @@
+[2026-01-10 11:12:08] ============================================================
+[2026-01-10 11:12:08] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-10 11:12:08] ============================================================
+[2026-01-10 11:12:08] Total experimentos: 18
+[2026-01-10 11:12:08] Ya completados: 0
+[2026-01-10 11:12:08] Fallidos previos: 0
+[2026-01-10 11:12:08] Ejecutando: ABL_CUR_NOKG_s42
+[2026-01-10 11:12:08]   Train: train_2000.tsv | KG: empty.spo | Seed: 42
+[2026-01-10 11:21:12] ============================================================
+[2026-01-10 11:21:12] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-10 11:21:12] ============================================================
+[2026-01-10 11:21:12] Total experimentos: 18
+[2026-01-10 11:21:12] Ya completados: 0
+[2026-01-10 11:21:12] Fallidos previos: 0
+[2026-01-10 11:21:12] Ejecutando: ABL_CUR_NOKG_s42
+[2026-01-10 11:21:12]   Train: train_2000.tsv | KG: empty.spo | Seed: 42
+[2026-01-10 13:37:44]   ✅ Completado en 136.5 min
+[2026-01-10 13:37:44] Ejecutando: ABL_CUR_NOKG_s123
+[2026-01-10 13:37:44]   Train: train_2000.tsv | KG: empty.spo | Seed: 123
+[2026-01-10 15:54:08]   ✅ Completado en 136.4 min
+[2026-01-10 15:54:08] Ejecutando: ABL_CUR_NOKG_s456
+[2026-01-10 15:54:08]   Train: train_2000.tsv | KG: empty.spo | Seed: 456
+[2026-01-10 18:10:42]   ✅ Completado en 136.6 min
+[2026-01-10 18:10:42] Ejecutando: ABL_CUR_GEN_s42
+[2026-01-10 18:10:42]   Train: train_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 42
+[2026-01-10 20:28:06]   ✅ Completado en 137.4 min
+[2026-01-10 20:28:06] Ejecutando: ABL_CUR_GEN_s123
+[2026-01-10 20:28:06]   Train: train_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 123
+[2026-01-10 22:44:52]   ✅ Completado en 136.8 min
+[2026-01-10 22:44:52] Ejecutando: ABL_CUR_GEN_s456
+[2026-01-10 22:44:52]   Train: train_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 456
+[2026-01-11 01:04:15]   ✅ Completado en 139.4 min
+[2026-01-11 01:04:15] Ejecutando: ABL_CUR_CUR_s42
+[2026-01-11 01:04:15]   Train: train_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 42
+[2026-01-11 03:21:01]   ✅ Completado en 136.8 min
+[2026-01-11 03:21:01] Ejecutando: ABL_CUR_CUR_s123
+[2026-01-11 03:21:01]   Train: train_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 123
+[2026-01-11 05:37:18]   ✅ Completado en 136.3 min
+[2026-01-11 05:37:18] Ejecutando: ABL_CUR_CUR_s456
+[2026-01-11 05:37:18]   Train: train_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 456
+[2026-01-11 07:53:45]   ✅ Completado en 136.5 min
+[2026-01-11 07:53:45] Ejecutando: ABL_RAW_NOKG_s42
+[2026-01-11 07:53:45]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 42
+[2026-01-11 07:53:53]   ❌ Error después de 0.1 min
+[2026-01-11 07:53:53]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:53:53] Ejecutando: ABL_RAW_NOKG_s123
+[2026-01-11 07:53:53]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 123
+[2026-01-11 07:54:00]   ❌ Error después de 0.1 min
+[2026-01-11 07:54:00]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:54:00] Ejecutando: ABL_RAW_NOKG_s456
+[2026-01-11 07:54:00]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 456
+[2026-01-11 07:54:08]   ❌ Error después de 0.1 min
+[2026-01-11 07:54:08]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:54:08] Ejecutando: ABL_RAW_GEN_s42
+[2026-01-11 07:54:08]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 42
+[2026-01-11 07:54:28]   ❌ Error después de 0.3 min
+[2026-01-11 07:54:28]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:54:28] Ejecutando: ABL_RAW_GEN_s123
+[2026-01-11 07:54:28]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 123
+[2026-01-11 07:54:47]   ❌ Error después de 0.3 min
+[2026-01-11 07:54:47]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:54:47] Ejecutando: ABL_RAW_GEN_s456
+[2026-01-11 07:54:47]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 456
+[2026-01-11 07:55:07]   ❌ Error después de 0.3 min
+[2026-01-11 07:55:07]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:55:07] Ejecutando: ABL_RAW_CUR_s42
+[2026-01-11 07:55:07]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 42
+[2026-01-11 07:55:15]   ❌ Error después de 0.1 min
+[2026-01-11 07:55:15]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:55:15] Ejecutando: ABL_RAW_CUR_s123
+[2026-01-11 07:55:15]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 123
+[2026-01-11 07:55:23]   ❌ Error después de 0.1 min
+[2026-01-11 07:55:23]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:55:23] Ejecutando: ABL_RAW_CUR_s456
+[2026-01-11 07:55:23]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 456
+[2026-01-11 07:55:30]   ❌ Error después de 0.1 min
+[2026-01-11 07:55:30]   STDERR: Traceback (most recent call last):
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 545, in <module>
+    main()
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 466, in main
+    instances = read_dataset(args.train_path)
+  File "/home/omar/projects/K-LBERTO/run_klberto_ner.py", line 261, in read_dataset
+    labels, tokens = line.strip().split("\t")
+ValueError: not enough values to unpack (expected 2, got 1)
+
+[2026-01-11 07:55:30] ============================================================
+[2026-01-11 07:55:30] RESUMEN FINAL
+[2026-01-11 07:55:30]   Completados: 9/18
+[2026-01-11 07:55:30]   Fallidos: 9
+[2026-01-11 07:55:30] ============================================================
+[2026-01-11 17:37:12] ============================================================
+[2026-01-11 17:37:12] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-11 17:37:12] ============================================================
+[2026-01-11 17:37:12] Total experimentos: 18
+[2026-01-11 17:37:12] Ya completados: 9
+[2026-01-11 17:37:12] Fallidos previos: 0
+[2026-01-11 17:37:12] Saltando ABL_CUR_NOKG_s42 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_NOKG_s123 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_NOKG_s456 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_GEN_s42 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_GEN_s123 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_GEN_s456 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_CUR_s42 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_CUR_s123 (ya completado)
+[2026-01-11 17:37:12] Saltando ABL_CUR_CUR_s456 (ya completado)
+[2026-01-11 17:37:12] Ejecutando: ABL_RAW_NOKG_s42
+[2026-01-11 17:37:12]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 42
+[2026-01-11 19:53:45]   ✅ Completado en 136.6 min
+[2026-01-11 19:53:45] Ejecutando: ABL_RAW_NOKG_s123
+[2026-01-11 19:53:45]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 123
+[2026-01-11 19:53:49]   ❌ Error después de 0.1 min
+[2026-01-11 19:53:49]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:53:49] Ejecutando: ABL_RAW_NOKG_s456
+[2026-01-11 19:53:49]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 456
+[2026-01-11 19:53:53]   ❌ Error después de 0.1 min
+[2026-01-11 19:53:53]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:53:53] Ejecutando: ABL_RAW_GEN_s42
+[2026-01-11 19:53:53]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 42
+[2026-01-11 19:53:57]   ❌ Error después de 0.1 min
+[2026-01-11 19:53:57]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:53:57] Ejecutando: ABL_RAW_GEN_s123
+[2026-01-11 19:53:57]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 123
+[2026-01-11 19:54:00]   ❌ Error después de 0.1 min
+[2026-01-11 19:54:00]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:54:00] Ejecutando: ABL_RAW_GEN_s456
+[2026-01-11 19:54:00]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 456
+[2026-01-11 19:54:04]   ❌ Error después de 0.1 min
+[2026-01-11 19:54:04]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:54:04] Ejecutando: ABL_RAW_CUR_s42
+[2026-01-11 19:54:04]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 42
+[2026-01-11 19:54:08]   ❌ Error después de 0.1 min
+[2026-01-11 19:54:08]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:54:08] Ejecutando: ABL_RAW_CUR_s123
+[2026-01-11 19:54:08]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 123
+[2026-01-11 19:54:12]   ❌ Error después de 0.1 min
+[2026-01-11 19:54:12]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:54:12] Ejecutando: ABL_RAW_CUR_s456
+[2026-01-11 19:54:12]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 456
+[2026-01-11 19:54:16]   ❌ Error después de 0.1 min
+[2026-01-11 19:54:16]   STDERR: e "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/__init__.py", line 15, in <module>
+    import pkuseg.trainer as trainer
+  File "/home/omar/miniconda3/envs/geo_kbert_jetson/lib/python3.8/site-packages/pkuseg/trainer.py", line 19, in <module>
+    import pkuseg.inference as _inf
+  File "pkuseg/inference.pyx", line 1, in init pkuseg.inference
+ValueError: numpy.ndarray size changed, may indicate binary incompatibility. Expected 96 from C header, got 88 from PyObject
+
+[2026-01-11 19:54:16] ============================================================
+[2026-01-11 19:54:16] RESUMEN FINAL
+[2026-01-11 19:54:16]   Completados: 10/18
+[2026-01-11 19:54:16]   Fallidos: 8
+[2026-01-11 19:54:16] ============================================================
+[2026-01-11 22:44:36] ============================================================
+[2026-01-11 22:44:36] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-11 22:44:36] ============================================================
+[2026-01-11 22:44:36] Total experimentos: 18
+[2026-01-11 22:44:36] Ya completados: 10
+[2026-01-11 22:44:36] Fallidos previos: 8
+[2026-01-11 22:44:36] Saltando ABL_CUR_NOKG_s42 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_NOKG_s123 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_NOKG_s456 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_GEN_s42 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_GEN_s123 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_GEN_s456 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_CUR_s42 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_CUR_s123 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_CUR_CUR_s456 (ya completado)
+[2026-01-11 22:44:36] Saltando ABL_RAW_NOKG_s42 (ya completado)
+[2026-01-11 22:44:36] Ejecutando: ABL_RAW_NOKG_s123
+[2026-01-11 22:44:36]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 123
+
+
+
+
+
+
+[2026-01-11 22:46:07] ============================================================
+[2026-01-11 22:46:07] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-11 22:46:07] ============================================================
+[2026-01-11 22:46:07] Total experimentos: 18
+[2026-01-11 22:46:07] Ya completados: 10
+[2026-01-11 22:46:07] Fallidos previos: 0
+[2026-01-11 22:46:07] Saltando ABL_CUR_NOKG_s42 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_NOKG_s123 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_NOKG_s456 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_GEN_s42 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_GEN_s123 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_GEN_s456 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_CUR_s42 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_CUR_s123 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_CUR_CUR_s456 (ya completado)
+[2026-01-11 22:46:07] Saltando ABL_RAW_NOKG_s42 (ya completado)
+[2026-01-11 22:46:07] Ejecutando: ABL_RAW_NOKG_s123
+[2026-01-11 22:46:07]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 123
+[2026-01-12 01:03:15]   ✅ Completado en 137.1 min
+[2026-01-12 01:03:15] Ejecutando: ABL_RAW_NOKG_s456
+[2026-01-12 01:03:15]   Train: train_raw_2000.tsv | KG: empty.spo | Seed: 456
+[2026-01-12 03:22:24]   ✅ Completado en 139.2 min
+[2026-01-12 03:22:24] Ejecutando: ABL_RAW_GEN_s42
+[2026-01-12 03:22:24]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 42
+[2026-01-12 05:39:06]   ✅ Completado en 136.7 min
+[2026-01-12 05:39:06] Ejecutando: ABL_RAW_GEN_s123
+[2026-01-12 05:39:06]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 123
+[2026-01-12 07:58:21]   ✅ Completado en 139.3 min
+[2026-01-12 07:58:21] Ejecutando: ABL_RAW_GEN_s456
+[2026-01-12 07:58:21]   Train: train_raw_2000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 456
+[2026-01-12 10:18:33]   ✅ Completado en 140.2 min
+[2026-01-12 10:18:33] Ejecutando: ABL_RAW_CUR_s42
+[2026-01-12 10:18:33]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 42
+[2026-01-12 12:35:12]   ✅ Completado en 136.6 min
+[2026-01-12 12:35:12] Ejecutando: ABL_RAW_CUR_s123
+[2026-01-12 12:35:12]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 123
+[2026-01-12 14:52:04]   ✅ Completado en 136.9 min
+[2026-01-12 14:52:04] Ejecutando: ABL_RAW_CUR_s456
+[2026-01-12 14:52:04]   Train: train_raw_2000.tsv | KG: wikidata_ner_spanish.spo | Seed: 456
+[2026-01-12 17:11:46]   ✅ Completado en 139.7 min
+[2026-01-12 17:11:46] ============================================================
+[2026-01-12 17:11:46] RESUMEN FINAL
+[2026-01-12 17:11:46]   Completados: 18/18
+[2026-01-12 17:11:46]   Fallidos: 0
+[2026-01-12 17:11:46] ============================================================

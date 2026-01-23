@@ -1,0 +1,60 @@
+{
+  "completed": [
+    "GS_D500_LR5e6",
+    "GS_D500_LR1e5",
+    "GS_D500_LR2e5",
+    "GS_D500_LR3e5",
+    "GS_D500_LR5e5",
+    "GS_D1000_LR5e6",
+    "GS_D1000_LR1e5",
+    "GS_D1000_LR2e5",
+    "GS_D1000_LR3e5",
+    "GS_D1000_LR5e5",
+    "GS_D2000_LR5e6",
+    "GS_D2000_LR1e5",
+    "GS_D2000_LR2e5",
+    "GS_D2000_LR3e5"
+  ],
+  "failed": [
+    {
+      "name": "GS_D2000_LR5e5",
+      "error": "No metrics file"
+    },
+    {
+      "name": "GS_D3000_LR5e6",
+      "error": "No metrics file"
+    },
+    {
+      "name": "GS_D3000_LR1e5",
+      "error": "No metrics file"
+    },
+    {
+      "name": "GS_D3000_LR2e5",
+      "error": "No metrics file"
+    },
+    {
+      "name": "GS_D3000_LR3e5",
+      "error": "No metrics file"
+    },
+    {
+      "name": "GS_D3000_LR5e5",
+      "error": "No metrics file"
+    }
+  ],
+  "skipped": [
+    "GS_D500_LR5e6",
+    "GS_D500_LR1e5",
+    "GS_D500_LR2e5",
+    "GS_D500_LR3e5",
+    "GS_D500_LR5e5",
+    "GS_D1000_LR5e6",
+    "GS_D1000_LR1e5",
+    "GS_D1000_LR2e5",
+    "GS_D1000_LR3e5",
+    "GS_D1000_LR5e5",
+    "GS_D2000_LR5e6",
+    "GS_D2000_LR1e5",
+    "GS_D2000_LR2e5"
+  ],
+  "current": null
+}

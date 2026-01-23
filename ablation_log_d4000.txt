@@ -1,0 +1,109 @@
+[2026-01-17 22:38:48] ============================================================
+[2026-01-17 22:38:48] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-17 22:38:48] ============================================================
+[2026-01-17 22:38:48] Total experimentos: 30
+[2026-01-17 22:38:48] Ya completados: 0
+[2026-01-17 22:38:48] Fallidos previos: 0
+[2026-01-17 22:38:48] Ejecutando: ABL_CUR_NOKG_s42
+[2026-01-17 22:38:48]   Train: train_4000.tsv | KG: empty.spo | Seed: 42
+[2026-01-17 22:40:45] ============================================================
+[2026-01-17 22:40:45] INICIO: Ablation Study - KG Quality vs Data Curation
+[2026-01-17 22:40:45] ============================================================
+[2026-01-17 22:40:45] Total experimentos: 30
+[2026-01-17 22:40:45] Ya completados: 0
+[2026-01-17 22:40:45] Fallidos previos: 0
+[2026-01-17 22:40:45] Ejecutando: ABL_CUR_NOKG_s42
+[2026-01-17 22:40:45]   Train: train_4000.tsv | KG: empty.spo | Seed: 42
+[2026-01-18 02:26:58]   ✅ Completado en 226.2 min
+[2026-01-18 02:26:58] Ejecutando: ABL_CUR_NOKG_s123
+[2026-01-18 02:26:58]   Train: train_4000.tsv | KG: empty.spo | Seed: 123
+[2026-01-18 06:13:03]   ✅ Completado en 226.1 min
+[2026-01-18 06:13:03] Ejecutando: ABL_CUR_NOKG_s456
+[2026-01-18 06:13:03]   Train: train_4000.tsv | KG: empty.spo | Seed: 456
+[2026-01-18 09:59:10]   ✅ Completado en 226.1 min
+[2026-01-18 09:59:10] Ejecutando: ABL_CUR_NOKG_s789
+[2026-01-18 09:59:10]   Train: train_4000.tsv | KG: empty.spo | Seed: 789
+[2026-01-18 13:45:38]   ✅ Completado en 226.5 min
+[2026-01-18 13:45:38] Ejecutando: ABL_CUR_NOKG_s2024
+[2026-01-18 13:45:38]   Train: train_4000.tsv | KG: empty.spo | Seed: 2024
+[2026-01-18 17:31:52]   ✅ Completado en 226.2 min
+[2026-01-18 17:31:52] Ejecutando: ABL_CUR_GEN_s42
+[2026-01-18 17:31:52]   Train: train_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 42
+[2026-01-18 21:18:25]   ✅ Completado en 226.6 min
+[2026-01-18 21:18:25] Ejecutando: ABL_CUR_GEN_s123
+[2026-01-18 21:18:25]   Train: train_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 123
+[2026-01-19 01:05:03]   ✅ Completado en 226.6 min
+[2026-01-19 01:05:03] Ejecutando: ABL_CUR_GEN_s456
+[2026-01-19 01:05:03]   Train: train_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 456
+[2026-01-19 04:51:49]   ✅ Completado en 226.8 min
+[2026-01-19 04:51:49] Ejecutando: ABL_CUR_GEN_s789
+[2026-01-19 04:51:49]   Train: train_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 789
+[2026-01-19 08:38:59]   ✅ Completado en 227.2 min
+[2026-01-19 08:38:59] Ejecutando: ABL_CUR_GEN_s2024
+[2026-01-19 08:38:59]   Train: train_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 2024
+[2026-01-19 12:26:32]   ✅ Completado en 227.6 min
+[2026-01-19 12:26:32] Ejecutando: ABL_CUR_CUR_s42
+[2026-01-19 12:26:32]   Train: train_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 42
+[2026-01-19 16:13:31]   ✅ Completado en 227.0 min
+[2026-01-19 16:13:31] Ejecutando: ABL_CUR_CUR_s123
+[2026-01-19 16:13:31]   Train: train_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 123
+[2026-01-19 20:00:43]   ✅ Completado en 227.2 min
+[2026-01-19 20:00:43] Ejecutando: ABL_CUR_CUR_s456
+[2026-01-19 20:00:43]   Train: train_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 456
+[2026-01-19 23:47:25]   ✅ Completado en 226.7 min
+[2026-01-19 23:47:25] Ejecutando: ABL_CUR_CUR_s789
+[2026-01-19 23:47:25]   Train: train_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 789
+[2026-01-20 03:33:58]   ✅ Completado en 226.5 min
+[2026-01-20 03:33:58] Ejecutando: ABL_CUR_CUR_s2024
+[2026-01-20 03:33:58]   Train: train_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 2024
+[2026-01-20 07:20:02]   ✅ Completado en 226.1 min
+[2026-01-20 07:20:02] Ejecutando: ABL_RAW_NOKG_s42
+[2026-01-20 07:20:02]   Train: train_raw_4000.tsv | KG: empty.spo | Seed: 42
+[2026-01-20 11:07:12]   ✅ Completado en 227.2 min
+[2026-01-20 11:07:12] Ejecutando: ABL_RAW_NOKG_s123
+[2026-01-20 11:07:12]   Train: train_raw_4000.tsv | KG: empty.spo | Seed: 123
+[2026-01-20 14:53:03]   ✅ Completado en 225.8 min
+[2026-01-20 14:53:03] Ejecutando: ABL_RAW_NOKG_s456
+[2026-01-20 14:53:03]   Train: train_raw_4000.tsv | KG: empty.spo | Seed: 456
+[2026-01-20 18:39:25]   ✅ Completado en 226.4 min
+[2026-01-20 18:39:25] Ejecutando: ABL_RAW_NOKG_s789
+[2026-01-20 18:39:25]   Train: train_raw_4000.tsv | KG: empty.spo | Seed: 789
+[2026-01-20 22:26:19]   ✅ Completado en 226.9 min
+[2026-01-20 22:26:19] Ejecutando: ABL_RAW_NOKG_s2024
+[2026-01-20 22:26:19]   Train: train_raw_4000.tsv | KG: empty.spo | Seed: 2024
+[2026-01-21 02:12:56]   ✅ Completado en 226.6 min
+[2026-01-21 02:12:56] Ejecutando: ABL_RAW_GEN_s42
+[2026-01-21 02:12:56]   Train: train_raw_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 42
+[2026-01-21 05:59:42]   ✅ Completado en 226.8 min
+[2026-01-21 05:59:42] Ejecutando: ABL_RAW_GEN_s123
+[2026-01-21 05:59:42]   Train: train_raw_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 123
+[2026-01-21 09:46:37]   ✅ Completado en 226.9 min
+[2026-01-21 09:46:37] Ejecutando: ABL_RAW_GEN_s456
+[2026-01-21 09:46:37]   Train: train_raw_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 456
+[2026-01-21 13:36:57]   ✅ Completado en 230.3 min
+[2026-01-21 13:36:57] Ejecutando: ABL_RAW_GEN_s789
+[2026-01-21 13:36:57]   Train: train_raw_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 789
+[2026-01-21 17:24:07]   ✅ Completado en 227.2 min
+[2026-01-21 17:24:07] Ejecutando: ABL_RAW_GEN_s2024
+[2026-01-21 17:24:07]   Train: train_raw_4000.tsv | KG: WikidataES_CLEAN_v251109.spo | Seed: 2024
+[2026-01-21 21:11:26]   ✅ Completado en 227.3 min
+[2026-01-21 21:11:26] Ejecutando: ABL_RAW_CUR_s42
+[2026-01-21 21:11:26]   Train: train_raw_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 42
+[2026-01-22 00:59:08]   ✅ Completado en 227.7 min
+[2026-01-22 00:59:08] Ejecutando: ABL_RAW_CUR_s123
+[2026-01-22 00:59:08]   Train: train_raw_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 123
+[2026-01-22 04:45:56]   ✅ Completado en 226.8 min
+[2026-01-22 04:45:56] Ejecutando: ABL_RAW_CUR_s456
+[2026-01-22 04:45:56]   Train: train_raw_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 456
+[2026-01-22 08:32:50]   ✅ Completado en 226.9 min
+[2026-01-22 08:32:50] Ejecutando: ABL_RAW_CUR_s789
+[2026-01-22 08:32:50]   Train: train_raw_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 789
+[2026-01-22 12:20:17]   ✅ Completado en 227.4 min
+[2026-01-22 12:20:17] Ejecutando: ABL_RAW_CUR_s2024
+[2026-01-22 12:20:17]   Train: train_raw_4000.tsv | KG: wikidata_ner_spanish.spo | Seed: 2024
+[2026-01-22 16:06:36]   ✅ Completado en 226.3 min
+[2026-01-22 16:06:36] ============================================================
+[2026-01-22 16:06:36] RESUMEN FINAL
+[2026-01-22 16:06:36]   Completados: 30/30
+[2026-01-22 16:06:36]   Fallidos: 0
+[2026-01-22 16:06:36] ============================================================

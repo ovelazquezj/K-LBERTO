@@ -1,0 +1,11 @@
+{
+  "train_path": "/home/omar/projects/K-LBERTO/data/wikiann_tsv/train_2000.tsv",
+  "batch_size": 8,
+  "learning_rate": 2e-05,
+  "epochs_num": 10,
+  "seq_length": 128,
+  "seed": 123,
+  "kg_name": "/home/omar/projects/K-LBERTO/brain/kgs/empty.spo",
+  "experiment_name": "ABL_CUR_NOKG_s123",
+  "logged_at": "2026-01-10T13:37:47.935869"
+}

@@ -1,0 +1,11 @@
+{
+  "train_path": "data/wikiann_tsv/train_500.tsv",
+  "batch_size": 8,
+  "learning_rate": 5e-05,
+  "epochs_num": 10,
+  "seq_length": 128,
+  "seed": 42,
+  "kg_name": "brain/kgs/wikidata_ner_spanish.spo",
+  "experiment_name": "GS_D500_LR5e5",
+  "logged_at": "2026-01-08T18:21:50.308588"
+}

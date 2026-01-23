@@ -1,0 +1,56 @@
+{
+  "started_at": "2026-01-04T14:26:25.492761",
+  "completed": [
+    "RQ1_D500_base_seed42",
+    "RQ1_D500_sqrt_seed42",
+    "RQ1_D500_base_seed43",
+    "RQ1_D500_sqrt_seed43",
+    "RQ1_D500_base_seed44",
+    "RQ1_D500_sqrt_seed44",
+    "RQ1_D750_base_seed42",
+    "RQ1_D750_sqrt_seed42",
+    "RQ1_D750_base_seed43",
+    "RQ1_D750_sqrt_seed43",
+    "RQ1_D750_base_seed44",
+    "RQ1_D750_sqrt_seed44",
+    "RQ1_D1000_base_seed42",
+    "RQ1_D1000_sqrt_seed42",
+    "RQ1_D1000_base_seed43",
+    "RQ1_D1000_sqrt_seed43",
+    "RQ1_D1000_base_seed44",
+    "RQ1_D1000_sqrt_seed44",
+    "RQ1_D1500_base_seed42",
+    "RQ1_D1500_sqrt_seed42",
+    "RQ1_D1500_base_seed43",
+    "RQ1_D1500_sqrt_seed43",
+    "RQ1_D1500_base_seed44",
+    "RQ1_D1500_sqrt_seed44"
+  ],
+  "failed": [
+    {
+      "name": "RQ1_D2000_base_seed42",
+      "error": "Timeout",
+      "log": "logs/RQ1_D2000_base_seed42.log"
+    },
+    {
+      "name": "RQ1_D2000_sqrt_seed42",
+      "error": "Timeout",
+      "log": "logs/RQ1_D2000_sqrt_seed42.log"
+    },
+    {
+      "name": "RQ1_D2000_base_seed43",
+      "error": "Timeout",
+      "log": "logs/RQ1_D2000_base_seed43.log"
+    },
+    {
+      "name": "RQ1_D2000_sqrt_seed43",
+      "error": "Timeout",
+      "log": "logs/RQ1_D2000_sqrt_seed43.log"
+    }
+  ],
+  "skipped": [],
+  "current": {
+    "name": "RQ1_D2000_base_seed44",
+    "started_at": "2026-01-06T09:56:51.383919"
+  }
+}

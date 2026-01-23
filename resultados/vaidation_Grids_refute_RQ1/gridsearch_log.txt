@@ -1,0 +1,128 @@
+
+================================================================================
+EXPERIMENTOS: 20 total
+Config: experiments_progress_gridsearch.json
+================================================================================
+
+[1/20] Experimento: GS_D500_LR5e6
+⏭️  SKIP: GS_D500_LR5e6 (ya completado)
+
+[2/20] Experimento: GS_D500_LR1e5
+⏭️  SKIP: GS_D500_LR1e5 (ya completado)
+
+[3/20] Experimento: GS_D500_LR2e5
+⏭️  SKIP: GS_D500_LR2e5 (ya completado)
+
+[4/20] Experimento: GS_D500_LR3e5
+⏭️  SKIP: GS_D500_LR3e5 (ya completado)
+
+[5/20] Experimento: GS_D500_LR5e5
+⏭️  SKIP: GS_D500_LR5e5 (ya completado)
+
+[6/20] Experimento: GS_D1000_LR5e6
+⏭️  SKIP: GS_D1000_LR5e6 (ya completado)
+
+[7/20] Experimento: GS_D1000_LR1e5
+⏭️  SKIP: GS_D1000_LR1e5 (ya completado)
+
+[8/20] Experimento: GS_D1000_LR2e5
+⏭️  SKIP: GS_D1000_LR2e5 (ya completado)
+
+[9/20] Experimento: GS_D1000_LR3e5
+⏭️  SKIP: GS_D1000_LR3e5 (ya completado)
+
+[10/20] Experimento: GS_D1000_LR5e5
+⏭️  SKIP: GS_D1000_LR5e5 (ya completado)
+
+[11/20] Experimento: GS_D2000_LR5e6
+⏭️  SKIP: GS_D2000_LR5e6 (ya completado)
+
+[12/20] Experimento: GS_D2000_LR1e5
+⏭️  SKIP: GS_D2000_LR1e5 (ya completado)
+
+[13/20] Experimento: GS_D2000_LR2e5
+⏭️  SKIP: GS_D2000_LR2e5 (ya completado)
+
+[14/20] Experimento: GS_D2000_LR3e5
+
+================================================================================
+🚀 INICIANDO: GS_D2000_LR3e5
+   Dataset: N/A samples
+   Config: N/A
+   LR: 3.00e-05
+   Seed: 42
+================================================================================
+✅ ÉXITO: GS_D2000_LR3e5
+
+[15/20] Experimento: GS_D2000_LR5e5
+
+================================================================================
+🚀 INICIANDO: GS_D2000_LR5e5
+   Dataset: N/A samples
+   Config: N/A
+   LR: 5.00e-05
+   Seed: 42
+================================================================================
+❌ FALLADO: GS_D2000_LR5e5 (sin métricas)
+
+[16/20] Experimento: GS_D3000_LR5e6
+
+================================================================================
+🚀 INICIANDO: GS_D3000_LR5e6
+   Dataset: N/A samples
+   Config: N/A
+   LR: 5.00e-06
+   Seed: 42
+================================================================================
+❌ FALLADO: GS_D3000_LR5e6 (sin métricas)
+
+[17/20] Experimento: GS_D3000_LR1e5
+
+================================================================================
+🚀 INICIANDO: GS_D3000_LR1e5
+   Dataset: N/A samples
+   Config: N/A
+   LR: 1.00e-05
+   Seed: 42
+================================================================================
+❌ FALLADO: GS_D3000_LR1e5 (sin métricas)
+
+[18/20] Experimento: GS_D3000_LR2e5
+
+================================================================================
+🚀 INICIANDO: GS_D3000_LR2e5
+   Dataset: N/A samples
+   Config: N/A
+   LR: 2.00e-05
+   Seed: 42
+================================================================================
+❌ FALLADO: GS_D3000_LR2e5 (sin métricas)
+
+[19/20] Experimento: GS_D3000_LR3e5
+
+================================================================================
+🚀 INICIANDO: GS_D3000_LR3e5
+   Dataset: N/A samples
+   Config: N/A
+   LR: 3.00e-05
+   Seed: 42
+================================================================================
+❌ FALLADO: GS_D3000_LR3e5 (sin métricas)
+
+[20/20] Experimento: GS_D3000_LR5e5
+
+================================================================================
+🚀 INICIANDO: GS_D3000_LR5e5
+   Dataset: N/A samples
+   Config: N/A
+   LR: 5.00e-05
+   Seed: 42
+================================================================================
+❌ FALLADO: GS_D3000_LR5e5 (sin métricas)
+
+================================================================================
+EJECUCIÓN COMPLETADA
+================================================================================
+✅ Completados: 14
+❌ Fallados: 6
+⏭️  Saltados: 13
