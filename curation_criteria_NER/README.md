@@ -92,7 +92,6 @@ Adaptive Edge NLP Architecture
 curation_criteria_NER/
 ├── README.md                      # This file
 ├── EstrategiaPaper3.md           # Detailed research strategy
-├── email_director_seguimiento.md  # Email draft for director
 │
 ├── # Future directories (post-approval)
 ├── scripts/                       # Curation scripts
@@ -120,7 +119,6 @@ curation_criteria_NER/
 | File | Purpose |
 |------|---------|
 | `EstrategiaPaper3.md` | Complete research strategy in Spanish |
-| `email_director_seguimiento.md` | Draft email for director communication |
 
 ---
 
