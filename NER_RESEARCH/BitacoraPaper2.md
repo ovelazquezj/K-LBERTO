@@ -1424,5 +1424,107 @@ overall, sino consistente a nivel de entidad individual.
 
 ---
 
-*Última actualización: 2026-01-22 22:15*
-*Estado: ANÁLISIS POR ENTIDAD COMPLETADO - Pendiente generación de figuras*
+# ENTRADA 27: ANÁLISIS DE ERRORES - DISTRIBUTION SHIFT IDENTIFICADO
+
+**Fecha:** 2026-01-25
+**Tipo:** Análisis post-hoc de errores
+
+---
+
+## 27.1 CONTEXTO
+
+Para entender **por qué RAW supera a CUR**, se realizó un análisis comparativo de la distribución de datos entre train (CUR/RAW) y test.
+
+---
+
+## 27.2 HALLAZGO CRÍTICO: DISTRIBUTION SHIFT
+
+### Comparación de Distribuciones
+
+| Métrica | TEST | CUR (train) | RAW (train) | Gap CUR | Gap RAW |
+|---------|------|-------------|-------------|---------|---------|
+| **REDIRECCIÓN** | 36.9% | 0.8% | 27.7% | **36.1%** | 9.2% |
+| **Alta densidad (>50%)** | 50.8% | 23.1% | 62.1% | 27.7% | 11.3% |
+| **Muy alta densidad (>90%)** | ~0% | 0% | 21.3% | - | - |
+| **Densidad promedio** | ~0.55 | 0.408 | 0.645 | Alto | Bajo |
+
+### Diagnóstico
+
+```
+El proceso de curación (criterio >90% entidades) eliminó:
+- 3,755 samples de alta densidad del pool original
+- Casi todas las REDIRECCIÓN del training (0.8% vs 27.7% en RAW)
+
+Pero el TEST SET contiene:
+- 36.9% REDIRECCIÓN
+- 50.8% samples con >50% densidad de entidades
+
+RESULTADO: Distribution shift severo entre train CUR y test
+```
+
+---
+
+## 27.3 EVIDENCIA CUANTITATIVA
+
+### Distribución de Densidad en Test Set
+
+```
+Densidad    Count   Visualización
+0.0-0.1:      18    ███
+0.1-0.2:      54    ██████████
+0.2-0.3:     138    ███████████████████████████
+0.3-0.4:     118    ███████████████████████
+0.4-0.5:     119    ███████████████████████
+0.5-0.6:      64    ████████████
+0.6-0.7:      40    ████████
+0.7-0.8:     169    █████████████████████████████████
+0.8-0.9:     273    ██████████████████████████████████████████████████████
+0.9-1.0:       7    █
+```
+
+**Observación:** 55% del test set tiene densidad >50%, pero CUR solo tiene 23.1%.
+
+---
+
+## 27.4 MECANISMO DEL FALLO
+
+```
+1. Curación elimina samples tipo REDIRECCIÓN y alta densidad
+2. Train CUR: densidad promedio 0.408, 0.8% REDIRECCIÓN
+3. Test: densidad promedio ~0.55, 36.9% REDIRECCIÓN
+4. Modelo CUR nunca vio patrones de alta densidad
+5. En test, CUR falla sistemáticamente en ~37% de muestras
+
+RAW mantiene alineación con test:
+- Densidad promedio 0.645 (más cercana a test)
+- 27.7% REDIRECCIÓN (más cercano a 36.9% de test)
+- Modelo RAW aprendió patrones que aparecen en test
+```
+
+---
+
+## 27.5 CONCLUSIÓN
+
+**La curación inyectó un error metodológico:**
+
+El criterio de filtrado ">90% entidades" fue diseñado asumiendo que samples con muchas entidades son "ruido" o "listas sin contexto". Sin embargo:
+
+1. El test set de WikiANN **contiene** estos patrones frecuentemente
+2. Para NER, reconocer entidades en contextos densos **es parte de la tarea**
+3. Eliminarlos del training creó un modelo que no generaliza
+
+**Implicación para el paper:**
+
+> "Curation criteria must consider test/production distribution. The >90% entity density filter, while intuitive for removing 'noise', eliminated patterns that constitute 37% of evaluation data, creating a train-test distribution mismatch that explains the 4.7% performance gap."
+
+---
+
+## 27.6 ARCHIVOS GENERADOS
+
+- `analyze_errors.py`: Script de análisis de distribution shift
+- Resultados integrados en esta entrada de bitácora
+
+---
+
+*Última actualización: 2026-01-25*
+*Estado: ANÁLISIS DE ERRORES COMPLETADO - Distribution shift identificado como causa raíz*

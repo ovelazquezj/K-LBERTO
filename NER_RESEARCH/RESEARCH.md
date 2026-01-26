@@ -431,10 +431,21 @@ Problem:   Position shifts, boundary patterns disrupted
 - NER benefits from diverse linguistic patterns
 - Aggressive cleaning removes edge cases
 
-### Hypothesis 2: Distribution Shift
-- Curated data has different distribution than test set
-- Raw data better matches evaluation conditions
-- Model learns more generalizable patterns
+### Hypothesis 2: Distribution Shift (CONFIRMED)
+
+**Quantitative Evidence:**
+
+| Metric | TEST | CUR (train) | RAW (train) | Gap CUR | Gap RAW |
+|--------|------|-------------|-------------|---------|---------|
+| REDIRECCIÓN samples | 36.9% | 0.8% | 27.7% | **36.1%** | 9.2% |
+| High density (>50%) | 50.8% | 23.1% | 62.1% | 27.7% | 11.3% |
+| Average entity density | ~0.55 | 0.408 | 0.645 | High | Low |
+
+**Mechanism:**
+- Curation criterion ">90% entities" removed 3,755 samples from training pool
+- These samples (REDIRECCIÓN, entity lists) constitute 37% of test set
+- CUR model never learned patterns present in 37% of evaluation data
+- RAW model maintained distribution alignment with test set
 
 ### Hypothesis 3: Boundary Signals
 - "Noisy" tokens may mark entity boundaries

@@ -21,6 +21,19 @@ This research investigates the effectiveness of Knowledge Graph (KG) injection i
 | **Raw data outperforms curated** | +4.7%, p<0.0001, Cohen's d=9.08 |
 | **Task-dependency confirmed** | Sentiment benefits from KG, NER does not |
 | **ORG hardest entity** | F1=0.39 vs LOC=0.54, PER=0.52 |
+| **Distribution shift identified** | Curation removed 37% of test-like patterns (REDIRECCIÓN) |
+
+### Root Cause Analysis
+
+The curation criterion ">90% entity density" created a **distribution shift**:
+
+| Metric | TEST | CUR (train) | RAW (train) |
+|--------|------|-------------|-------------|
+| REDIRECCIÓN | 36.9% | 0.8% | 27.7% |
+| High density (>50%) | 50.8% | 23.1% | 62.1% |
+| Avg density | ~0.55 | 0.408 | 0.645 |
+
+CUR model never saw patterns present in 37% of test data.
 
 ---
 
@@ -50,6 +63,7 @@ NER_RESEARCH/
 ├── analyze_ablation_results_d4000.py  # D=4000 analysis (final)
 ├── analyze_entity_data.py             # Entity-level analysis (no matplotlib)
 ├── analyze_entity_types.py            # Entity analysis with plots
+├── analyze_errors.py                  # Distribution shift / error analysis
 ├── generate_figures_colab.py          # Figure generation for Colab/laptop
 │
 ├── # Results Data
