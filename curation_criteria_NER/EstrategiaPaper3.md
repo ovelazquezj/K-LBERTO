@@ -247,7 +247,7 @@ Total: ~6-7 semanas
 
 ## 8. RECURSOS NECESARIOS
 
-### Hardware
+### Hardware Actual
 - Jetson Orin NX (disponible) - ~16 días de cómputo
 
 ### Datasets
@@ -258,6 +258,47 @@ Total: ~6-7 semanas
 ### Software
 - Scripts de curación (por desarrollar)
 - Pipeline de análisis (extender de Paper 2)
+
+---
+
+## 8.1 ESCALAMIENTO A 3 JETSONS (PENDIENTE)
+
+### Objetivo
+Reducir tiempo de experimentación de ~16 días a ~5.5 días.
+
+### Hardware Requerido
+- Jetson Orin NX #1 (disponible)
+- Jetson Orin NX #2 (por adquirir)
+- Jetson Orin NX #3 (por adquirir)
+
+### Distribución Óptima de Experimentos
+
+| Jetson | Asignación | Experimentos | Tiempo |
+|--------|------------|--------------|--------|
+| **J1** | C1-C3 (15) + C8 (5) + Combo 1-2 (10) + CoNLL subset (4) | 34 | ~5.5 días |
+| **J2** | C4-C6 (15) + C9 (5) + Combo 3-4 (10) + CoNLL subset (4) | 34 | ~5.5 días |
+| **J3** | C7, C10 (10) + WikiANN multi (10) + CoNLL resto (12) | 32 | ~5.3 días |
+
+### Comparativa de Tiempos
+
+| Configuración | Experimentos | Tiempo Total |
+|---------------|--------------|--------------|
+| 1 Jetson | 100 | ~16 días |
+| 3 Jetsons | 100 (paralelo) | **~5.5 días** |
+
+### Consideraciones Técnicas
+
+1. **Sincronización de código** - Mismo commit del repositorio en los 3 dispositivos
+2. **Nomenclatura de resultados** - Prefijos `J1_`, `J2_`, `J3_` para identificar origen
+3. **Monitoreo centralizado** - Script que consulte progreso de los 3 dispositivos
+4. **Merge de resultados** - Script para unificar CSVs al finalizar
+
+### Estado
+- [ ] Adquirir Jetson #2
+- [ ] Adquirir Jetson #3
+- [ ] Configurar ambiente idéntico en los 3 dispositivos
+- [ ] Desarrollar scripts de distribución
+- [ ] Desarrollar sistema de monitoreo multi-dispositivo
 
 ---
 
