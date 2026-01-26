@@ -11,7 +11,7 @@
 
 ## Overview
 
-This research investigates the effectiveness of Knowledge Graph (KG) injection in Named Entity Recognition (NER) for low-resource Spanish, using K-LBERTO (an edge-optimized K-BERT variant). Through a factorial ablation study (2×3 design), we discovered surprising findings that challenge conventional assumptions about data curation and knowledge enhancement.
+This research investigates the effectiveness of Knowledge Graph (KG) injection in Named Entity Recognition (NER) for low-resource Spanish, using K-LBERTO (an adaptation of K-BERT to Spanish, built on BETO). All experiments were executed on a Jetson Orin NX edge device with runs optimized for edge constraints. Through a factorial ablation study (2×3 design), we discovered surprising findings that challenge conventional assumptions about data curation and knowledge enhancement.
 
 ### Key Findings
 

@@ -1153,7 +1153,7 @@ Conclusión                Sin diferencia     RAW > CUR
 
 ## 25.7 ABSTRACT PROPUESTO
 
-> Knowledge-enhanced language models like K-BERT have shown promise for NLP tasks, but their effectiveness in low-resource settings and token-level tasks remains underexplored. We present a factorial ablation study examining knowledge graph quality and data curation effects on Spanish NER using K-LBERTO, an edge-optimized K-BERT variant. Our findings challenge conventional assumptions:
+> Knowledge-enhanced language models like K-BERT have shown promise for NLP tasks, but their effectiveness in low-resource settings and token-level tasks remains underexplored. We present a factorial ablation study examining knowledge graph quality and data curation effects on Spanish NER using K-LBERTO, an adaptation of K-BERT to Spanish built on BETO and validated on Jetson Orin NX edge hardware. Our findings challenge conventional assumptions:
 >
 > (1) Knowledge graph injection provides NO benefit for NER, with generic KGs actively harming performance [-2.7%, p<0.0001];
 >
