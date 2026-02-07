@@ -49,7 +49,7 @@ All experimental work, data collection, model training, and results interpretati
 
 ```
 v6 (Baseline - Problem)
-- Dataset: 900 samples (with 60.7% noise)
+- Dataset: 1,125samples (with 60.7% noise)
 - KG: 61 triplets (0.04% coverage, 40% [UNK])
 - Result: Accuracy 0.44 (collapse to majority class)
 - Root Cause: Poor data quality is bottleneck
@@ -57,14 +57,14 @@ v6 (Baseline - Problem)
 v7 (Methodological Error - Demonstration)
 - Dataset: 2176 samples (clean) [checkmark]
 - KG: 138 triplets (1.83% coverage, 0% [UNK]) [checkmark]
-- Parameters: LR 5e-05, dropout 0.5 (NOT ADJUSTED) [X]
+- Parameters: LR 2e-05, dropout 0.5 (NOT ADJUSTED) [X]
 - Result: Loss diverges (1.505 to 2.804) - CANCELED
 - Lesson: Curation without parameter scaling insufficient
 
 v8 (Correction - Success)
 - Dataset: 2176 samples (clean) [checkmark]
 - KG: 138 triplets (1.83% coverage, 0% [UNK]) [checkmark]
-- Parameters: LR 1e-05 (-80%), dropout 0.3 (-40%) [checkmark]
+- Parameters: LR 1.43e-05 (-80%), dropout 0.3 (-40%) [checkmark]
 - Result: Loss converges (1.456 to 1.520) - SUCCESSFUL
 - Accuracy: 0.5596 (56%) - +27% improvement vs baseline
 ```
@@ -154,7 +154,7 @@ The five fixes improve code, but the main problem lies in DATA. Without data cur
 
 # Data Analysis
 
-## Original Dataset (900 samples)
+## Original Dataset (1,125samples)
 
 | Problem | Quantity | % Dataset | Severity | Impact |
 |---------|----------|-----------|----------|--------|
@@ -195,7 +195,7 @@ KG with 0.04% coverage + 40% [UNK]
 
 ### Step 1: Acquisition
 - Download TASS 2019 complete: 1125 samples
-- Original problem: 900 samples + noise
+- Original problem: 1,125samples + noise
 
 ### Step 2: Cleaning (Curation)
 Remove @user mentions:
@@ -225,7 +225,7 @@ Applied:
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
-| Samples | 900 | 1522 train | +69% |
+| Samples | 1,125| 1522 train | +69% |
 | Test set | 225 | 654 | +191% |
 | Total | 1125 | 2176 | +93% |
 | With noise | 60.7% | 0% | 100% curated |
@@ -281,7 +281,7 @@ intensidad > sentiment strength
 ## v7 Parameters (NOT ADJUSTED)
 
 ```
-Learning rate: 5e-05 [SAME as v6]
+Learning rate: 2e-05 [SAME as v6]
 Dropout: 0.5 [SAME as v6]
 <!-- Epochs: 10 [Increased] -->
 ```
@@ -313,8 +313,8 @@ Mathematical implication:
 - Large steps + non-convex space = DIVERGENCE
 
 Evidence:
-v6: LR 5e-05 (designed for 1125 samples)
-v7: LR 5e-05 (REUSED for 2176 samples)
+v6: LR 2e-05 (designed for 1125 samples)
+v7: LR 2e-05 (REUSED for 2176 samples)
 Result: Too high for new scale
 ```
 
@@ -338,15 +338,15 @@ Calculation v8:
 ```
 Dataset ratio: 2176 / 1125 = 1.93
 sqrt(1.93) ≈ 1.39
-Theoretical LR: 5e-05 / 1.39 ≈ 3.6e-05
-Applied LR: 1e-05 (with 2x safety factor)
+Theoretical LR: 2e-05 / 1.39 ≈ 3.6e-05
+Applied LR: 1.43e-05 (with 2x safety factor)
 Total reduction: -80%
 ```
 
 ## v8 Parameters (ADJUSTED)
 
 ```
-Learning rate: 1e-05 (-80% vs v7)
+Learning rate: 1.43e-05 (-80% vs v7)
 Reason: 1.93x larger dataset requires smaller steps
 
 Dropout: 0.3 (-40% vs v7)
@@ -427,8 +427,8 @@ When dataset grows Nx:
 Practical example (v8):
   N = 1.93 (dataset 1.93x larger)
   sqrt(N) = 1.39
-  LR_new = 5e-05 / 1.39 = 3.6e-05
-  (Applied 1e-05 with 2x safety factor)
+  LR_new = 2e-05 / 1.39 = 3.6e-05
+  (Applied 1.43e-05 with 2x safety factor)
 
 Validation: Works empirically in v8
 ```
@@ -571,12 +571,12 @@ v6→v7→v8 demonstrated this exact order
 
 | Aspect | v6 | v7 | v8 |
 |--------|----|----|-----|
-| Dataset samples | 900 | 2176 | 2176 |
+| Dataset samples | 1,125| 2176 | 2176 |
 | Dataset quality | Poor (60.7% noise) | Good | Good |
 | KG triplets | 61 | 138 | 138 |
 | KG coverage | 0.04% | 1.83% | 1.83% |
 | KG [UNK] tokens | 40% | 0% | 0% |
-| Learning rate | 5e-05 | 5e-05 | 1e-05 |
+| Learning rate | 2e-05 | 2e-05 | 1.43e-05 |
 | Dropout | 0.5 | 0.5 | 0.3 |
 | Epochs | 5 | 10 | 10 |
 | Final loss | 1.573 | 2.804 (diverges) | 1.520 |
